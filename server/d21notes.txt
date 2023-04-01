@@ -1,0 +1,12 @@
+In the mywind folder in day21 ws, login to sql via terminal using this:
+mysql -u fred -p
+Password@123456
+
+source northwind.sql
+source northwind-data.sql
+
+Under mySQL workbench:
+test if everything present:
+USE northwind;
+
+SELECT * FROM customers

@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
+<header class="header-6">
+  <div class="branding">
+      <a href="javascript://" class="nav-link">
+          <!-- <cds-icon shape="vm-bug"></cds-icon> -->
+          <span class="title">MyFirstNews</span>
+      </a>
+  </div>
+  <!-- <div class="header-actions" ngIf="getUsername()">
+      <a href="javascript://" class="nav-link nav-icon-text"> -->
+          <!-- <cds-icon shape="user"></cds-icon> -->
+          <!-- <span class="nav-text">{{username.firstname}}</span>
+      </a>
+  </div> -->
+  <div class="header-actions" *ngIf="firstname">
+    <a href="javascript://" class="nav-link nav-icon-text">
+        <!-- <cds-icon shape="user"></cds-icon> -->
+        <span class="nav-text">Hello, {{firstname}}</span>
+        <span class="nav-text" (click)="logout()">Logout</span>
+
+        <!-- <div class="dropdown">
+          <span class="nav-text">Hello, {{firstname}}</span>
+          <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+          </div>
+        </div> -->
+    </a>
+</div>
+
+<div class="header-actions" *ngIf="!firstname">
+  <a href="javascript://" class="nav-link nav-icon-text">
+      <!-- <cds-icon shape="user"></cds-icon> -->
+      <span class="nav-text">Please Login / Register to continue</span>
+  </a>
+</div>
+</header>
+<div class="main-container">
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+

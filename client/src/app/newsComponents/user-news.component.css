@@ -1,0 +1,27 @@
+mat-toolbar {
+    justify-content: space-between;
+}
+
+.content {
+    padding: 16px;
+}
+
+.content > mat-card {
+    margin-bottom: 16px;
+}
+
+.example-card{
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .img-article{
+    width: 400px;
+    height: auto;
+    align-items: center;
+    max-width: 100%;
+    }
+  
+  .icon-color{
+    color: red
+  }
