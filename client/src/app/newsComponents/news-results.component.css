@@ -1,0 +1,17 @@
+.example-card{
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .img-article{
+    width: 700px;
+    height: auto;
+    align-items: center;
+    max-width: 100%;
+    }
+  
+  .icon-color{
+    color: red
+  }
+    
+  

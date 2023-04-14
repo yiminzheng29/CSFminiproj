@@ -21,17 +21,21 @@ public class Queries {
         """;
 
 
-    // public static final String SQL_GET_USER = """
-    //     select * from user where 
-    //     username = ?
-    //         """;
+    public static final String SQL_SEARCH_USER = """
+        select * from user where username = ?
+            """;
 
-            public static final String SQL_GET_USER = """
-                select * from user where 
-                username = ? and password = ?
-                    """;
+    public static final String SQL_GET_USER = """
+        select * from user where username = ? and password = sha1(?)
+        """;
         
+    public static final String SQL_UPDATE_USER = """
+        update user set password = sha1(?), firstname = ?, lastname = ?, dob = ?, email = ?, phone = ? where
+        username = ?""";
 
+    public static final String SQL_DELETE_USER = """
+        delete from user where username = ?
+            """;
 
     public static final String SQL_SAVE_ISSUE="""
         insert into issues(issueNo, title, description, priority, status, timestamp, user)
@@ -89,4 +93,11 @@ public class Queries {
     public static final String SQL_GET_ALL_COMMENTS = """
         select * from comments;
             """;
+
+    public static final String SQL_INSERT_TOKEN = """
+        update notifications set token=? where username=?""";
+
+    public static final String SQL_GET_TOKEN = """
+        select token from notifications where username=?""";
+        
 }

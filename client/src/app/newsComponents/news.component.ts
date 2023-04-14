@@ -7,6 +7,7 @@ import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CommentService } from '../comments.service';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-news',
@@ -37,10 +38,11 @@ export class NewsComponent implements OnInit, OnDestroy{
   postComment!: comments
   newsId!: string
   liked = false
+  message: any
 
   
   constructor(private fb: FormBuilder, private newsSvc: NewsService, private userSvc: UserService, private router: Router,
-    private commentSvc: CommentService) {}
+    private commentSvc: CommentService, private firebaseSvc: FirebaseService) {}
 
   ngOnInit() {
     console.log('in news component')
@@ -67,6 +69,9 @@ export class NewsComponent implements OnInit, OnDestroy{
         // console.info(this.allResponses)
     this.showComments()
     console.info(this.allComments)
+    this.firebaseSvc.requestPermission(this.username)
+    this.message = this.firebaseSvc.listen()
+
   }
 
   // like news based on index
@@ -110,22 +115,30 @@ export class NewsComponent implements OnInit, OnDestroy{
     this.allNews[i] = await this.newsSvc.saveNews(this.allNews[i], this.username)
     this.newsId = this.allNews[i].newsId as string
     this.postComment = this.commentField.value as comments
-    
+
     this.postComment = await this.commentSvc.postComment(this.postComment, this.newsId)
     this.allComments.push(this.postComment)
-    console.info(this.postComment)
     this.commentField.reset() // reset the inputs
     this.ngOnInit() // refreshes the browser
   }
 
   async showComments() {
     this.allComments = await this.commentSvc.getAllComments()
+
     for (let i = 0; i < this.allNews.length; i ++) {
       this.allNews[i].comments = this.allComments
       this.allNews[i].comments?.filter(c => {
         c.newsId = this.allNews[i].newsId
       })
     }
+  }
+
+  share(i: number): void {
+    this.selectedNews = this.allNews[i] as News
+    // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
+    this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
+      "test")
+
   }
 
   ngOnDestroy(): void {

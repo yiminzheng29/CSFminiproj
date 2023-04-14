@@ -26,7 +26,18 @@ public class UserService {
         return userRepo.authenticate(payload);
     }
 
+    public User getUser (String username) {
+        return userRepo.getUserDetails(username);
+    }
 
+
+    public void updateUser(User user) {
+        userRepo.updateUser(user);
+    }
+
+    public void deleteUser(String username) {
+        userRepo.deleteUser(username);
+    }
 
     // public String saveIssue(JsonObject payload, User user) {
         
@@ -51,5 +62,6 @@ public class UserService {
     //     return issueNo;
         
     // }
+    
 
 }

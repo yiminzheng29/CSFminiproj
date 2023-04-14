@@ -54,6 +54,6 @@ export class HomeComponent implements OnInit{
       this.loading = true
       this.user = await this.userSvc.login(this.form.value.username, this.form.value.password)
       console.info("home user: ", this.user)
-      this.router.navigate(['/news'])
+      this.router.navigate(['/search'])
     }
 }

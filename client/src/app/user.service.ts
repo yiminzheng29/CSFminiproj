@@ -67,29 +67,38 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
         return this.http.post(`/register`, user)
     }
 
+    getUser(username: string): Promise<User> {
+        return firstValueFrom(this.http.get<User>(`http://localhost:8080/api/user/${username}`))
+    }
+
     // for updating user details
-    update(username: string, params: any) {
-        return this.http.put(`/users/${username}`, params)
-            .pipe(map(result => {
-                if (username == this.userValue?.username) {
-                    const user = { ...this.userValue, ...params}
-                    localStorage.setItem("user", JSON.stringify(result))
-                    this.userSubject.next(user)
-                }
-                return result
-            }))
+    // update(username: string, params: any) {
+    //     return this.http.put(`/users/${username}`, params)
+    //         .pipe(map(result => {
+    //             if (username == this.userValue?.username) {
+    //                 const user = { ...this.userValue, ...params}
+    //                 localStorage.setItem("user", JSON.stringify(result))
+    //                 this.userSubject.next(user)
+    //             }
+    //             return result
+    //         }))
+    // }
+
+    updateUser(user: User) {
+        console.info(user)
+        return firstValueFrom(this.http.put(`http://localhost:8080/api/user/${user.username}/update`, user))
     }
 
     // for deleting user
     delete(username: string) {
-        return this.http.delete(`/users/${username}/delete`)
+        return firstValueFrom(this.http.delete(`http://localhost:8080/api/user/${username}/delete`)
             .pipe(map(result => {
                 // auto logout if user deleted
                 if (username == this.userValue?.username) {
                     this.logout()
                 }
                 return result
-            }))
+            })))
     }
 
 }

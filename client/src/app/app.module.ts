@@ -26,7 +26,16 @@ import { CommentsComponent } from './newsComponents/comments.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommentService } from './comments.service';
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
+import { initializeApp } from "firebase/app";
+import { FirebaseService } from './firebase.service';
+import { SearchNewsComponent } from './newsComponents/search-news.component';
+import { NewsResultsComponent } from './newsComponents/news-results.component';
+initializeApp(environment.firebase);
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
@@ -35,8 +44,11 @@ const routes: Routes = [
   {path:'update/:issueNo', component: IssueDetailsComponent},
   {path:'register', component: RegisterComponent},
   {path:'news', component: NewsComponent},
+  {path:'search', component: SearchNewsComponent},
+  {path:'search/:searchQuery', component: NewsResultsComponent},
   {path:'authors', component: AuthorsComponent},
   {path:'news/:username', component: UserNewsComponent},
+  {path:'users/:username', component: EditUserComponent},
   {path:'**', redirectTo: "/", pathMatch: "full"},
   
 ];
@@ -56,7 +68,10 @@ const routes: Routes = [
     EditUserComponent,
     AuthorsComponent,
     UserNewsComponent,
-    CommentsComponent
+    CommentsComponent,
+    SearchNewsComponent,
+    NewsResultsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -68,10 +83,15 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FlexLayoutModule,
-    RouterModule.forRoot( routes, {useHash: true})
+    RouterModule.forRoot( routes, {useHash: true}),
+    // AngularFireDatabaseModule,
+    // AngularFireStorageModule,
+    // AngularFireModule.initializeApp(environment.firebase),
+    // AngularFireMessagingModule
+    
 
   ],
-  providers: [UserService, NewsService, CommentService],
+  providers: [UserService, NewsService, CommentService, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

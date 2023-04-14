@@ -1,1 +1,43 @@
-<p>edit-user works!</p>
+<h1>Edit User Details</h1>
+<form [formGroup]="editForm" (ngSubmit)="editUser()">
+    <clr-input-container>
+        <label>Username</label>
+        <input clrInput formControlName="username" readonly/>
+        <!-- <clr-control-error>Username is required</clr-control-error> -->
+    </clr-input-container>
+    <clr-password-container>
+        <label>Password</label>
+        <input clrPassword formControlName="password" />
+        <clr-control-error>Password is required</clr-control-error>
+    </clr-password-container>
+    <clr-input-container>
+        <label>First Name</label>
+        <input clrInput formControlName="firstname" [(ngModel)]="this.user.firstname"/>
+        <clr-control-error>First Name is required</clr-control-error>
+    </clr-input-container>
+    <!-- <input type="text" value="{{this.user.firstname}}"> -->
+    <clr-input-container>
+        <label>Last Name</label>
+        <input clrInput formControlName="lastname" [(ngModel)]="this.user.lastname"/>
+        <clr-control-error>Last Name is required</clr-control-error>
+    </clr-input-container>
+    <clr-date-container>
+        <label>Date of Birth</label>
+        <input type="date" clrDate formControlName="dob" placeholder="{{this.user.dob}}"/>
+        <clr-control-error>Date of birth is required</clr-control-error>
+    </clr-date-container>
+    <clr-input-container>
+        <label>Email</label>
+        <input clrInput formControlName="email" [(ngModel)]="this.user.email"/>
+        <clr-control-error>Email is required</clr-control-error>
+    </clr-input-container>
+    <clr-input-container>
+        <label>Phone</label>
+        <input clrInput formControlName="phone" [(ngModel)]="this.user.phone"/>
+        <clr-control-error>Phone number is required</clr-control-error>
+    </clr-input-container>
+    
+    <button class="btn btn-primary" type="submit" [disabled]="this.editForm.invalid">Update User</button>
+    <button class="btn" type="button" [routerLink]="['/']">Cancel</button>
+    <button class="btn btn-danger" (onClick)="deleteUser()">Delete User</button>
+</form>

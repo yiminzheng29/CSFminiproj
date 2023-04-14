@@ -33,7 +33,7 @@
       </button>
       <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>textsms</mat-icon>Comment</button>
       <a mat-button color="white" href="{{ article.url }}" target="_blank"><mat-icon>visibility</mat-icon> More</a>
-      <button mat-button color="white"><mat-icon>share</mat-icon> Share</button>
+      <button mat-button color="white" (click)="share(i)"><mat-icon>share</mat-icon> Share</button>
     </mat-card-actions>
     <div [@panelState]="folded" *ngIf="this.folded=='open'">
       <form [formGroup]="commentField"  (ngSubmit)="submitComment(i)"> 

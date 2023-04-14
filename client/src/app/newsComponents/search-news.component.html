@@ -1,0 +1,13 @@
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjIwMzIwYWZkMmE0M2NlNjcyODZlMzZlMmJhYmFiM2NkNjA4ZGI2MCZjdD1n/H54R9ULqkR5bG/giphy.gifhttps://media.giphy.com/media/l3E6tfnrASiOukiKk/giphy.gif" class="center">
+<h2 class="title">Search News</h2>
+
+<form [formGroup]="searchForm" (ngSubmit)="submitQuery()">
+    <div class="wrap">
+        <div class="search">
+        <input type="text" class="searchTerm" placeholder="What are you looking for?" formControlName="searchQuery">
+        <button type="submit" class="searchButton">
+            <mat-icon>searchButton</mat-icon>
+        </button>
+        </div>
+    </div>
+</form>

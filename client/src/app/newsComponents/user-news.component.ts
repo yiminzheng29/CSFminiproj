@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { News } from '../models';
 import { NewsService } from '../news.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-news',
@@ -17,8 +18,11 @@ export class UserNewsComponent implements OnInit{
   allNewsByUser: News[] = []
   username!: string
   params$!: Subscription
+  paramName!: string
+  userSub$!: Subscription
 
-  constructor(private newsSvc: NewsService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(private newsSvc: NewsService, private activatedRoute: ActivatedRoute, 
+    private router: Router, private userSvc: UserService) {}
 
   toggleGridColumns() {
    
@@ -30,11 +34,17 @@ export class UserNewsComponent implements OnInit{
     if (localStorage.getItem("user") == null) {
       this.router.navigate(['/'])
     }
+      this.userSub$ = this.userSvc.user.subscribe(value => {
+        this.username = value?.username as string
+      })
       this.params$ = this.activatedRoute.params.subscribe(
         (params) => {
-          this.username = params['username']
+          this.paramName = params['username']
         }
       )
+    if (this.username != this.paramName) {
+      this.router.navigate(['/'])
+    }
       this.getAllNewsByUser()
   }
 

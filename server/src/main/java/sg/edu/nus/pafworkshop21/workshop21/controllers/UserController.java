@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import sg.edu.nus.pafworkshop21.workshop21.models.Comment;
-
 import sg.edu.nus.pafworkshop21.workshop21.models.News;
 import sg.edu.nus.pafworkshop21.workshop21.models.User;
 import sg.edu.nus.pafworkshop21.workshop21.services.CommentService;
@@ -45,7 +46,6 @@ public class UserController {
 
     @Autowired
     private CommentService cSvc;
-
 
     @PostMapping(path="/createUser")
     @ResponseBody
@@ -73,6 +73,30 @@ public class UserController {
         return ResponseEntity.ok(opt.get());
     }
 
+    @GetMapping(path="/user/{username}")
+    @ResponseBody
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        User user = userSvc.getUser(username);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping(path="/user/{username}/update")
+    @ResponseBody
+    public void updateUser(@PathVariable String username, @RequestBody String payload) throws Exception{
+        JsonReader jr = Json.createReader(new StringReader(payload));
+        JsonObject jo = jr.readObject();
+
+        userSvc.updateUser(User.create(jo));
+    }
+
+    @DeleteMapping(path="/user/{username}/delete")
+    @ResponseBody
+    public void deleteUser(@PathVariable String username) throws Exception{
+    
+        userSvc.deleteUser(username);
+    }
+
     @PostMapping(path="/like", consumes=MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> likeNews(@RequestPart String username, @RequestPart String title, 
@@ -98,7 +122,7 @@ public class UserController {
             return ResponseEntity.ok(result.toJson().toString());
     }
 
-    @PostMapping(path="/save", consumes=MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path="/save")
     @ResponseBody
     public ResponseEntity<String> saveNews(@RequestPart String title, 
         @RequestPart String publishedAt, @RequestPart(required = false) String author, @RequestPart(required = false) String description, 
@@ -121,6 +145,7 @@ public class UserController {
             return ResponseEntity.ok(result.toJson().toString());
     }
 
+
     // @PostMapping(path="/{username}/createIssue")
     // @ResponseBody
     // public ResponseEntity<String> createIssue(@RequestBody String payload, @PathVariable User user) {
@@ -137,7 +162,7 @@ public class UserController {
     // displays all the news
     @GetMapping(path="/news/authors")
     @ResponseBody
-    public ResponseEntity<List<String>> getAllCategories(@RequestParam String country, @RequestParam String username) {
+    public ResponseEntity<List<String>> getAllCategories(@RequestParam String country, @RequestParam String username) throws Exception {
 
         List<News> result = newsSvc.getNews(country, username);
         List<String> resultSources = new LinkedList<>();
@@ -151,7 +176,7 @@ public class UserController {
 
     @GetMapping(path="/news/allNews")
     @ResponseBody
-    public ResponseEntity<String> getAllNews(@RequestParam String country, @RequestParam String username) {
+    public ResponseEntity<String> getAllNews(@RequestParam String country, @RequestParam String username) throws Exception {
 
         List<News> result = newsSvc.getNews(country, username);
         
@@ -223,4 +248,27 @@ public class UserController {
         return ResponseEntity.ok(arr.build().toString());
 
     }
+
+    // @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	// public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+
+	// 	authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+
+	// 	final UserDetails userDetails = userDetailsService
+	// 			.loadUserByUsername(authenticationRequest.getUsername());
+
+	// 	final String token = jwtTokenUtil.generateToken(userDetails);
+
+	// 	return ResponseEntity.ok(new JwtResponse(token));
+	// }
+
+	// private void authenticate(String username, String password) throws Exception {
+	// 	try {
+	// 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	// 	} catch (DisabledException e) {
+	// 		throw new Exception("USER_DISABLED", e);
+	// 	} catch (BadCredentialsException e) {
+	// 		throw new Exception("INVALID_CREDENTIALS", e);
+	// 	}
+	// }
 }

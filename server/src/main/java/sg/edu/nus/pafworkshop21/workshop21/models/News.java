@@ -78,6 +78,13 @@ public class News {
             .build();
     }
 
+    public static String messageToString(News news) {
+        String title = news.getTitle();
+        String author = news.getAuthor();
+        String link = news.getUrl();
+        return "Title: %s\nAuthor: %s\nLink: %s".formatted(title, author, link);
+    }
+
     // to get all news
     public static List<News> create(JsonObject jo) {
         JsonArray jArr = jo.getJsonArray("articles");
@@ -102,6 +109,7 @@ public class News {
             article.setTitle(title.substring(1, title.length()-1));
 
             String description = news.get("description").toString();
+            description = description.replaceAll("\\\\", "");
             if (description.contains("null")) {
                 article.setDescription("");
             }
@@ -163,7 +171,10 @@ public class News {
         news.setSourceName(jo.getString("sourceName"));
         news.setAuthor(jo.getString("author"));
         news.setContent(jo.getString("content"));
-        news.setDescription(jo.getString("description"));
+
+        String description = jo.getString("description");
+        description = description.replaceAll("\\\\", "");
+        news.setDescription(description);
         String dateTime = jo.getString("publishedAt");
         dateTime = dateTime.replace("Z", "").substring(0, dateTime.length()-5);
         news.setPublishedAt(DateTime.parse(dateTime));

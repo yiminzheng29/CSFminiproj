@@ -57,3 +57,8 @@ create table comments (
     
     primary key(commentId)
 );
+
+create table notifications (
+	username varchar(32) not null,
+    token varchar(1000) not null
+);

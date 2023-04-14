@@ -64,4 +64,13 @@ export class NewsService {
             this.http.get<News[]>(`http://localhost:8080/api/news/${username}`)
         )
     }
+
+    public searchNews(searchQuery: string, username: string): Promise<News[]> {
+        const params = new HttpParams()
+            .set("username", username)
+        console.info(params)
+        return firstValueFrom(
+            this.http.get<News[]>(`http://localhost:8080/api/news/${searchQuery}/results`, {params})
+        )
+    }
 }
