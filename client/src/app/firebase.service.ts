@@ -13,22 +13,23 @@ export class FirebaseService {
     message: any
     token!: string
 
-    requestPermission(username: string): string {
+    requestPermission(username: string) {
         const messaging = getMessaging();
         getToken(messaging, 
         { vapidKey: environment.firebase.vapidKey}).then(
         (currentToken) => {
             if (currentToken) {
-            this.token = currentToken
-            console.log("Hurraaa!!! we got the token.....");
-            console.log(currentToken);
+            console.log(username, currentToken);
+            this.saveToken(username, currentToken)
             } else {
             console.log('No registration token available. Request permission to generate one.');
             }
         }).catch((err) => {
             console.log('An error occurred while retrieving token. ', err);
-        });
-        return this.token
+        }
+        
+        );
+          
     }
 
     listen(): string {
@@ -41,8 +42,12 @@ export class FirebaseService {
         return this.message
     }
 
-    public saveToken(token: string, username: string) {
-        return firstValueFrom(this.http.post('http://localhost:8080/api/saveToken', {token, username}))
+    public saveToken(username: string, token: string) {
+        const params = new HttpParams()
+            .set("username", username)
+            .set("token", token)
+        return firstValueFrom(this.http.post('http://localhost:8080/api/saveToken', params))
+        
     }
 
     public shareNews(message: string, sender: string, recipient: string) {

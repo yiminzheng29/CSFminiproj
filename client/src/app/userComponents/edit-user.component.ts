@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
@@ -11,6 +11,9 @@ import { User } from '../models';
   styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
+  
+  @ViewChild('image')
+  image!: ElementRef
 
   editForm!: FormGroup
   username?: string
@@ -18,6 +21,7 @@ export class EditUserComponent implements OnInit {
   paramName?: string
   params$!: Subscription
   user!: User
+
 
   constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router, 
     private activatedRoute: ActivatedRoute) {}
@@ -46,7 +50,10 @@ export class EditUserComponent implements OnInit {
   }
 
   editUser() {
-    this.userSvc.updateUser(this.editForm.value)
+    const user = this.editForm.value as User
+    user.profileImage = this.image.nativeElement.files[0]
+    console.info(user)
+    this.userSvc.updateUser(user)
     console.info("User updated", this.editForm.value as User)
     this.router.navigate(['/news'])
   }
@@ -61,9 +68,10 @@ export class EditUserComponent implements OnInit {
       password: this.fb.control('', [Validators.required, Validators.minLength(4)]),
       firstname: this.fb.control('', [Validators.required]), 
       lastname: this.fb.control('', [Validators.required]), 
-      dob: this.fb.control('', [Validators.required]),
+      // dob: this.fb.control('', [Validators.required]),
       email: this.fb.control('', [Validators.required, Validators.email]),
-      phone: this.fb.control('', [Validators.required])
+      profileImage: this.fb.control('', [Validators.required])
+      // phone: this.fb.control('', [Validators.required])
     })
   }
 

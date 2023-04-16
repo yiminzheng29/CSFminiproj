@@ -18,7 +18,6 @@ import { NewsComponent } from './newsComponents/news.component';
 import { RegisterComponent } from './userComponents/register.component';
 import { EditUserComponent } from './userComponents/edit-user.component';
 import { NewsService } from './news.service';
-import { AuthorsComponent } from './newsComponents/authors.component';
 import { MaterialModule } from './material.module';
 import { UserNewsComponent } from './newsComponents/user-news.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,19 +34,26 @@ import { initializeApp } from "firebase/app";
 import { FirebaseService } from './firebase.service';
 import { SearchNewsComponent } from './newsComponents/search-news.component';
 import { NewsResultsComponent } from './newsComponents/news-results.component';
+import { EntertainmentNewsComponent } from './newsComponents/entertainment-news.component';
+import { SportsNewsComponent } from './newsComponents/sports-news.component';
+import { TechnologyNewsComponent } from './newsComponents/technology-news.component';
+import { BusinessNewsComponent } from './newsComponents/business-news.component';
 initializeApp(environment.firebase);
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
-  {path:'add-issue', component: IssueReportComponent},
-  {path:'issues/:issueNo', component: RetrieveIssueComponent},
-  {path:'update/:issueNo', component: IssueDetailsComponent},
+  // {path:'add-issue', component: IssueReportComponent},
+  // {path:'issues/:issueNo', component: RetrieveIssueComponent},
+  // {path:'update/:issueNo', component: IssueDetailsComponent},
   {path:'register', component: RegisterComponent},
   {path:'news', component: NewsComponent},
+  {path:'news/entertainment', component: EntertainmentNewsComponent},
+  {path:'news/sports', component: SportsNewsComponent},
+  {path:'news/business', component: BusinessNewsComponent},
+  {path:'news/technology', component: TechnologyNewsComponent},
   {path:'search', component: SearchNewsComponent},
   {path:'search/:searchQuery', component: NewsResultsComponent},
-  {path:'authors', component: AuthorsComponent},
-  {path:'news/:username', component: UserNewsComponent},
+  {path:'savedNews/:username', component: UserNewsComponent},
   {path:'users/:username', component: EditUserComponent},
   {path:'**', redirectTo: "/", pathMatch: "full"},
   
@@ -66,11 +72,14 @@ const routes: Routes = [
     NewsComponent,
     RegisterComponent,
     EditUserComponent,
-    AuthorsComponent,
     UserNewsComponent,
     CommentsComponent,
     SearchNewsComponent,
     NewsResultsComponent,
+    EntertainmentNewsComponent,
+    SportsNewsComponent,
+    TechnologyNewsComponent,
+    BusinessNewsComponent,
 
   ],
   imports: [

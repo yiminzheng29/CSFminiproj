@@ -3,6 +3,7 @@
 body{
   background: #f2f2f2;
   font-family: 'Open Sans', sans-serif;
+  background: url("/assets/images/bkgrd-login.jpg") no-repeat;
 }
 
 .search {
@@ -55,4 +56,10 @@ body{
 
 .title {
     text-align: center;
+}
+
+.search-field {
+  width: 700px; /* set your desired width */
+  margin: auto;
+
 }

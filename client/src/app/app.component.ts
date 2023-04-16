@@ -18,12 +18,14 @@ export class AppComponent implements OnInit{
   message:any = null;
   userSub$!: Subscription
   firstname!: string
+  username!: string
 
 
   ngOnInit(): void {
       console.info("In app comp")
       this.userSub$ = this.userSvc.user.subscribe(values => {
         this.firstname = values?.firstname as string
+        this.username = values?.username as string
       })
 
       this.requestPermission();

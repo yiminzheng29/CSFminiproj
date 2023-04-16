@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../models';
@@ -12,25 +12,34 @@ import { FirebaseService } from '../firebase.service';
 })
 export class RegisterComponent implements OnInit{
   
-  loginForm!: FormGroup
+  @ViewChild('image')
+  image!: ElementRef
+
+  registrationForm!: FormGroup
   token!: string
   username!: string
+  
 
   constructor(private fb: FormBuilder, private userSvc: UserService, private router: Router, 
       private firebaseSvc: FirebaseService) {}
 
   ngOnInit(): void {
-      this.loginForm = this.createForm()
+      this.registrationForm = this.createForm()
   }
 
   // register a new user
   createUser() {
-    this.userSvc.createUser(this.loginForm.value)
-    console.info("User created", this.loginForm.value as User)
-    this.username = this.loginForm.value['username']
-    this.token = this.firebaseSvc.requestPermission(this.username)
-    console.info("token: ", this.token)
-    this.firebaseSvc.saveToken(this.token, this.username)
+    
+    const user = this.registrationForm.value as User
+    user.profileImage = this.image.nativeElement.files[0]
+    
+    this.userSvc.createUser(user)
+    this.username = this.registrationForm.value['username']
+    console.info(this.username)
+    this.firebaseSvc.requestPermission(this.username)
+    // console.info("token: ", this.token as string)
+    // console.info(user.username)
+    // this.firebaseSvc.saveToken(this.token, user.username)
     this.router.navigate(['/news'])
   }
 
@@ -40,9 +49,12 @@ export class RegisterComponent implements OnInit{
       password: this.fb.control('', [Validators.required, Validators.minLength(4)]),
       firstname: this.fb.control('', [Validators.required]), 
       lastname: this.fb.control('', [Validators.required]), 
-      dob: this.fb.control('', [Validators.required]),
+      // dob: this.fb.control('', [Validators.required]),
       email: this.fb.control('', [Validators.required, Validators.email]),
-      phone: this.fb.control('', [Validators.required])
+      profileImage: this.fb.control('', [Validators.required])
+      // phone: this.fb.control('', [Validators.required])
     })
   }
+
+
 }

@@ -1,4 +1,26 @@
-<mat-card appearance="outlined" class="example-card"
+
+<body>
+  <div class="top-buttons" align="center" mat-button-spacing="10px">
+    <button mat-raised-button style="background-color: black; color: white">General</button>
+    <button mat-raised-button [routerLink]="['/news/entertainment']">Entertainment</button>
+    <button mat-raised-button [routerLink]="['/news/business']">Business</button>
+    <button mat-raised-button [routerLink]="['/news/technology']">Technology</button>
+    <button mat-raised-button [routerLink]="['/news/sports']">Sports</button>
+    <br><br>
+    <form  [formGroup]="searchForm" (ngSubmit)="submitQuery()">
+      <mat-form-field class="search-field">
+        <mat-label>Enter your search here</mat-label>
+        <input matInput formControlName="searchQuery" />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+    </form>
+  
+  </div>
+
+  
+  
+  
+  <mat-card appearance="outlined" class="example-card"
     *ngFor="let article of allNews; let i = index">
     <mat-card-header>
       <!-- <div mat-card-avatar [ngStyle]="{
@@ -31,18 +53,21 @@
           <mat-icon>thumb_up_alt</mat-icon> 
         </div> {{ article.likes }} Likes
       </button>
-      <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>textsms</mat-icon>Comment</button>
+      <!-- <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>textsms</mat-icon>Comment</button> -->
       <a mat-button color="white" href="{{ article.url }}" target="_blank"><mat-icon>visibility</mat-icon> More</a>
       <button mat-button color="white" (click)="share(i)"><mat-icon>share</mat-icon> Share</button>
     </mat-card-actions>
     <div [@panelState]="folded" *ngIf="this.folded=='open'">
-      <form [formGroup]="commentField"  (ngSubmit)="submitComment(i)"> 
+      <!-- <form [formGroup]="commentField"  (ngSubmit)="submitComment(i)"> 
         <mat-form-field>
           <input matInput type="text" formControlName="comment" class="full-width">
         </mat-form-field>
         <button mat-button type="submit" [disabled]="!this.commentField.valid">Submit</button>
         
     {{article.comments}}
-      </form>
+      </form> -->
     </div>
   </mat-card>
+
+
+</body>

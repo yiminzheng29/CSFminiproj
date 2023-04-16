@@ -12,6 +12,7 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
 
     canLogin = false
     username!: string
+    imageData = ""
 
     private userSubject: BehaviorSubject<User | null>
     public user: Observable<User | null>
@@ -27,7 +28,16 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
 
     // creates user in this area
     createUser(user: User): Promise<User> {
-        return firstValueFrom(this.http.post<User>('http://localhost:8080/api/createUser', user))
+        const content = new FormData()
+        content.set("profileImage", user.profileImage)
+        content.set("username", user.username)
+        content.set("password", user.password)
+        content.set("firstname", user.firstname)
+        content.set("lastname", user.lastname)
+        content.set("email", user.email)
+        
+
+        return firstValueFrom(this.http.post<User>('http://localhost:8080/api/createUser', content))
     }
 
     canDeactivate(component: CanLeave, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot, nextState: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
@@ -85,8 +95,14 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
     // }
 
     updateUser(user: User) {
-        console.info(user)
-        return firstValueFrom(this.http.put(`http://localhost:8080/api/user/${user.username}/update`, user))
+        const content = new FormData()
+        content.set("username", user.username)
+        content.set("password", user.password)
+        content.set("firstname", user.firstname)
+        content.set("lastname", user.lastname)
+        content.set("email", user.email)
+        content.set("profileImage", user.profileImage)
+        return firstValueFrom(this.http.put(`http://localhost:8080/api/user/${user.username}/update`, content))
     }
 
     // for deleting user

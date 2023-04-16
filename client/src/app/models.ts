@@ -22,15 +22,25 @@ export interface Issue {
     completed?: Date
 }
 
+// export interface User {
+//     username?: string
+//     password?: string
+//     firstname?: string
+//     lastname?: string
+//     dob?: Date
+//     email?: string
+//     phone?: string
+//     token?: string
+// }
+
 export interface User {
-    username?: string
-    password?: string
-    firstname?: string
-    lastname?: string
-    dob?: Date
-    email?: string
-    phone?: string
-    token?: string
+    username: string
+    password: string
+    firstname: string
+    lastname: string
+    email: string
+    profileImage: File
+    token: string
 }
 
 export interface CanLeave {

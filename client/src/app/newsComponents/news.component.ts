@@ -39,10 +39,11 @@ export class NewsComponent implements OnInit, OnDestroy{
   newsId!: string
   liked = false
   message: any
-
+  searchQuery!: string
+  searchForm!: FormGroup
   
   constructor(private fb: FormBuilder, private newsSvc: NewsService, private userSvc: UserService, private router: Router,
-    private commentSvc: CommentService, private firebaseSvc: FirebaseService) {}
+ private firebaseSvc: FirebaseService) {}
 
   ngOnInit() {
     console.log('in news component')
@@ -67,12 +68,25 @@ export class NewsComponent implements OnInit, OnDestroy{
           console.error("error: ", error)
         })
         // console.info(this.allResponses)
-    this.showComments()
+    // this.showComments()
     console.info(this.allComments)
-    this.firebaseSvc.requestPermission(this.username)
+    // this.firebaseSvc.requestPermission(this.username)
     this.message = this.firebaseSvc.listen()
-
+    this.searchForm = this.createForm()
   }
+
+  submitQuery() {
+    this.searchQuery = this.searchForm.value['searchQuery'] as string
+    console.info(this.searchQuery)
+    this.router.navigate(['/search/',this.searchQuery])
+  }
+
+  createForm() {
+    return this.fb.group({
+      searchQuery: this.fb.control<string>('')
+    })
+  }
+
 
   // like news based on index
   async likeNews(i: number) {
@@ -111,27 +125,27 @@ export class NewsComponent implements OnInit, OnDestroy{
     
   }
 
-  async submitComment(i: number) {
-    this.allNews[i] = await this.newsSvc.saveNews(this.allNews[i], this.username)
-    this.newsId = this.allNews[i].newsId as string
-    this.postComment = this.commentField.value as comments
+  // async submitComment(i: number) {
+  //   this.allNews[i] = await this.newsSvc.saveNews(this.allNews[i], this.username)
+  //   this.newsId = this.allNews[i].newsId as string
+  //   this.postComment = this.commentField.value as comments
 
-    this.postComment = await this.commentSvc.postComment(this.postComment, this.newsId)
-    this.allComments.push(this.postComment)
-    this.commentField.reset() // reset the inputs
-    this.ngOnInit() // refreshes the browser
-  }
+  //   this.postComment = await this.commentSvc.postComment(this.postComment, this.newsId)
+  //   this.allComments.push(this.postComment)
+  //   this.commentField.reset() // reset the inputs
+  //   this.ngOnInit() // refreshes the browser
+  // }
 
-  async showComments() {
-    this.allComments = await this.commentSvc.getAllComments()
+  // async showComments() {
+  //   this.allComments = await this.commentSvc.getAllComments()
 
-    for (let i = 0; i < this.allNews.length; i ++) {
-      this.allNews[i].comments = this.allComments
-      this.allNews[i].comments?.filter(c => {
-        c.newsId = this.allNews[i].newsId
-      })
-    }
-  }
+  //   for (let i = 0; i < this.allNews.length; i ++) {
+  //     this.allNews[i].comments = this.allComments
+  //     this.allNews[i].comments?.filter(c => {
+  //       c.newsId = this.allNews[i].newsId
+  //     })
+  //   }
+  // }
 
   share(i: number): void {
     this.selectedNews = this.allNews[i] as News
@@ -144,6 +158,8 @@ export class NewsComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
       this.userSub$.unsubscribe()
   }
+
+  
 }
 
 // .then(
