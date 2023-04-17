@@ -5,8 +5,8 @@
   height: 80px
 }
 body {
-  padding: 50px;
-  background: url("/assets/images/bkgrd-news.jpeg") no-repeat;
+  padding: 20px;
+  /* background: url("/assets/images/bkgrd-news.jpeg") no-repeat; */
   background-size: cover;
   background-position: center;
 }
@@ -59,6 +59,7 @@ mat-toolbar {
     margin-bottom: 10px;
     align-items: center;
     justify-content: center;
+    color: grey;
   }
 
   mat-divider {

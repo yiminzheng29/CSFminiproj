@@ -57,7 +57,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 100px;
+    padding: 20px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,7 +67,7 @@
   }
 
   .logo {
-    font-size: 2em;
+    font-size: 1.2em;
     color: white;
     user-select: none;
   }
@@ -102,8 +102,8 @@
   }
 
   .navigation .btnLogin-popup {
-    width: 130px;
-    height: 50px;
+    width: 80px;
+    height: 40px;
     background: transparent;
     border: 2px solid white;
     outline: none;
@@ -112,11 +112,14 @@
     color: white;
     font-size: 1.1em;
     font-weight: 500;
-    margin-left: 40px;
+    margin-left: 20px;
     transition: .5s;
+    ;
   }
+
   
   .navigation .btnLogin-popup:hover {
     background: #fff;
     color: #162938
   }
+

@@ -1,17 +1,37 @@
 .example-card{
-    margin-top: 4px;
-    margin-bottom: 10px;
-  }
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+body {
+  margin-top: 150px;
+}
   
-  .img-article{
+.img-article{
     width: 700px;
     height: auto;
     align-items: center;
     max-width: 100%;
-    }
+  }
   
   .icon-color{
     color: red
   }
+
+.back-nav {
+  margin-left: 10px;
+}
+
+.card-icons {
+  margin-top: auto;
+  display: flex;
+  /* justify-content: flex-end; */
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  color: grey;
+}
     
   

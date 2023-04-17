@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { HomeComponent } from './userComponents/home.component';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from "../environments/environment";
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 @Component({
   selector: 'app-root',

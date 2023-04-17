@@ -3,14 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { IssueDetailsComponent } from './components/issue-details.component';
-import { IssueListComponent } from './components/issue-list.component';
 import { ClarityModule } from '@clr/angular';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IssueReportComponent } from './components/issue-report.component';
-import { ConfirmDialogComponent } from './components/confirm-dialog.component';
 import { RouterModule, Routes } from '@angular/router';
-import { RetrieveIssueComponent } from './components/retrieve-issue.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './userComponents/home.component'
 import { UserService } from './user.service';
@@ -38,6 +33,8 @@ import { EntertainmentNewsComponent } from './newsComponents/entertainment-news.
 import { SportsNewsComponent } from './newsComponents/sports-news.component';
 import { TechnologyNewsComponent } from './newsComponents/technology-news.component';
 import { BusinessNewsComponent } from './newsComponents/business-news.component';
+import { TestNewsComponent } from './newsComponents/test-news.component';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 initializeApp(environment.firebase);
 
 const routes: Routes = [
@@ -63,11 +60,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    IssueDetailsComponent,
-    IssueListComponent,
-    IssueReportComponent,
-    ConfirmDialogComponent,
-    RetrieveIssueComponent,
     HomeComponent,
     NewsComponent,
     RegisterComponent,
@@ -80,6 +72,7 @@ const routes: Routes = [
     SportsNewsComponent,
     TechnologyNewsComponent,
     BusinessNewsComponent,
+    TestNewsComponent,
 
   ],
   imports: [
@@ -92,6 +85,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FlexLayoutModule,
+    LoadingBarRouterModule,
     RouterModule.forRoot( routes, {useHash: true}),
     // AngularFireDatabaseModule,
     // AngularFireStorageModule,

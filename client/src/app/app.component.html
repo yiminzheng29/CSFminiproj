@@ -36,19 +36,73 @@
   <title>Document</title>
 </head> -->
 <!-- <body> -->
-  <header>
+
+  
+  <!-- <header>
     <h2 class="logo">What's New</h2>
-    <nav class="navigation">
-      <a *ngIf="firstname" [routerLink]="['/news']">Home</a>
-      <a *ngIf="firstname" [routerLink]="['/savedNews', username]">Your Saved News</a>
-      <!-- <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a> -->
-      <a *ngIf="firstname" [routerLink]="['/users', username]">Hello, {{firstname}}!</a>
-      <button *ngIf="firstname" class="btnLogin-popup" (click)="logout()">Logout</button>
-      <button *ngIf="!firstname" class="btnLogin-popup">Login/Register</button>
-    </nav>
+      <ngx-loading-bar color="#CD67BA" height="4px"></ngx-loading-bar>
+      <nav class="navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <a *ngIf="firstname" [routerLink]="['/news']">Home</a>
+        <a *ngIf="firstname" [routerLink]="['/savedNews', username]">Your Saved News</a>
+        <a *ngIf="firstname" [routerLink]="['/users', username]">Hello, {{firstname}}!</a>
+        <button *ngIf="firstname" class="btnLogin-popup" (click)="logout()">Logout</button>
+        <button *ngIf="!firstname" class="btnLogin-popup">Login/Register</button>
+      </nav>
+    
+  </header> -->
+  
+  <header>
+      <h2 class="logo">WhatsNew</h2>
+      <ngx-loading-bar color="white" height="4px"></ngx-loading-bar>
+      <nav  *ngIf="firstname" class="navbar navbar-expand-lg navigation">
+        <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <!-- <button *ngIf="!firstname" class="btnLogin-popup">Login/Register</button> -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <li class="nav-item">
+              <a class="nav-link" *ngIf="firstname" [routerLink]="['/news']">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" *ngIf="firstname" [routerLink]="['/savedNews', username]">Your Saved News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" *ngIf="firstname" [routerLink]="['/users', username]">Hello, {{firstname}}!</a>
+            </li>
+        </div>
+          <br>
+        <button *ngIf="firstname" class="btnLogin-popup" (click)="logout()">Logout</button>
+      </nav>
+      
   </header>
+  <!-- <ngx-loading-bar color="#CD67BA" height="4px"></ngx-loading-bar>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navigation">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+    </div>
+  </nav> -->
+
   <main>
     <router-outlet></router-outlet>
   </main>

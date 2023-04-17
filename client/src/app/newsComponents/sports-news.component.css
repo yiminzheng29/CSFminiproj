@@ -1,8 +1,8 @@
 .example-card{
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
   
   .img-article{
@@ -23,5 +23,21 @@
     
   body {
     margin-top: 150px;
+  }
+
+  .search-field {
+    width: 300px; /* set your desired width */
+    margin: auto;
+
+  }
+
+  .card-icons {
+    margin-top: auto;
+    display: flex;
+    /* justify-content: flex-end; */
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    color: grey;
   }
   

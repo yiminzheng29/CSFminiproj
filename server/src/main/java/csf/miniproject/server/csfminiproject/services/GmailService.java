@@ -62,46 +62,6 @@ public class GmailService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    // public void sendMail(String subject, String message) throws Exception {
-    //     Properties props = new Properties();
-    //     Session session = Session.getDefaultInstance(props, null);
-    //     MimeMessage email = new MimeMessage(session);
-    //     email.setFrom(new InternetAddress(TEST_EMAIL));
-    //     email.addRecipient(TO, new InternetAddress(TEST_EMAIL));
-    //     email.setSubject(subject);
-    //     email.setText(message);
-
-    //     ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-    //     email.writeTo(buffer);
-    //     byte[] rawMessageBytes = buffer.toByteArray();
-    //     String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
-    //     Message msg = new Message();
-    //     msg.setRaw(encodedEmail);
-
-    //     try {
-    //         msg = service.users().messages().send("me", msg).execute();
-    //         System.out.println("Message id: " + msg.getId());
-    //         System.out.println(msg.toPrettyString());
-    //     } catch (GoogleJsonResponseException e) {
-    //         GoogleJsonError error = e.getDetails();
-    //         if (error.getCode() == 403) {
-    //             System.err.println("Unable to send message: " + e.getDetails());
-    //         } else {
-    //             throw e;
-    //         }
-    //     }
-    // }
-
-    // public static void main(String[] args) throws Exception {
-    //     new GmailService().sendMail("A new message", """
-    //             Dear reader,
-                                
-    //             Hello world.
-                                
-    //             Best regards,
-    //             myself
-    //             """);
-    // }
 
     public void sendMail(User user) throws Exception {
         String message = """
