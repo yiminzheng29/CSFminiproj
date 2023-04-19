@@ -33,7 +33,8 @@ export class NewsComponent implements OnInit, OnDestroy{
   selectedNews!: News
   toggle = false
   allResponses: string[] = []
-  commentField!: FormGroup
+  shareNews!: FormGroup
+  recipient!: string
   folded = 'closed'
   postComment!: comments
   newsId!: string
@@ -112,15 +113,9 @@ export class NewsComponent implements OnInit, OnDestroy{
 
   toggleFold(i: number) {
     this.folded = this.folded === 'open' ? 'closed' : 'open'
-    
-    console.info(this.allNews[i])
-    this.commentField = this.fb.group({
-        username: this.username,
-        firstname: this.userSvc.userValue?.firstname,
-        lastname: this.userSvc.userValue?.lastname,
-        comment: this.fb.control<string>('',[Validators.minLength(1), Validators.required]),
-        // published: Date.now().toString(),
-        // newsId: this.newsId
+    this.allNews[i].toggle = this.folded
+    this.shareNews = this.fb.group({
+        recipient: this.fb.control<string>(''),
       })
     
   }
@@ -150,8 +145,13 @@ export class NewsComponent implements OnInit, OnDestroy{
   share(i: number): void {
     this.selectedNews = this.allNews[i] as News
     // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-    this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
-      "test")
+    console.info(this.shareNews.value['recipient'])
+    this.recipient = this.shareNews.value['recipient'] as string
+    this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+      this.recipient, this.selectedNews.urlImage)
+    this.shareNews.reset()
+    this.ngOnInit()
+    this.folded='closed'
 
   }
 

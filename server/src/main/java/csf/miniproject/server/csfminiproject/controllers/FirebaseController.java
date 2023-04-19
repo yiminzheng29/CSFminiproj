@@ -35,15 +35,15 @@ public class FirebaseController {
 
     @PostMapping(path = "/news/sendNews",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> sendNotification(@RequestPart String recipient, @RequestPart String sender, @RequestPart String message) throws FirebaseMessagingException  {
+    public ResponseEntity<String> sendNotification(@RequestPart String recipient, @RequestPart String sender, @RequestPart String message, @RequestPart String urlImage) throws FirebaseMessagingException  {
         System.out.println(recipient);
         System.out.println(message);
-        System.out.println(sender);
+        System.out.println(urlImage);
 
         FirebaseNotification fNotification = new FirebaseNotification();
         fNotification.setTitle(message);
-        System.out.println(fNotification.getMessage());
         fNotification.setMessage(sender);
+        fNotification.setUrlImage(urlImage);
         Optional<String> token = firebaseSvc.getToken(recipient);
 
         if (token.isEmpty()) {
@@ -60,23 +60,25 @@ public class FirebaseController {
     public ResponseEntity<String> sendNotification(@RequestBody String payload) throws FirebaseMessagingException  {
         JsonReader jr = Json.createReader(new StringReader(payload));
         JsonObject jo = jr.readObject();
+        System.out.println(jo.toString());
 
-        String message = jo.getString("message");
-        String sender = jo.getString("sender");
-        String recipient = jo.getString("recipient");
+        // String message = jo.getString("message");
+        // String sender = jo.getString("sender");
+        // String recipient = jo.getString("recipient");
 
-        FirebaseNotification fNotification = new FirebaseNotification();
-        fNotification.setTitle(message);
-        fNotification.setMessage(sender);
-        Optional<String> token = firebaseSvc.getToken(recipient);
+        // FirebaseNotification fNotification = new FirebaseNotification();
+        // fNotification.setTitle(message);
+        // fNotification.setMessage(sender);
+        // Optional<String> token = firebaseSvc.getToken(recipient);
 
-        if (token.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
-        }else{
-            fNotification.setTarget(token.get());
-            firebaseSvc.sendNotification(fNotification);
-            return ResponseEntity.ok("ok");
-        }
+        // if (token.isEmpty()) {
+        //     return ResponseEntity.badRequest().body(null);
+        // }else{
+        //     fNotification.setTarget(token.get());
+        //     firebaseSvc.sendNotification(fNotification);
+        //     return ResponseEntity.ok("ok");
+        // }
+        return ResponseEntity.ok("test");
     }
 
     @PostMapping(path="/saveToken")

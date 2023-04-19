@@ -6,11 +6,23 @@ import { News } from '../models';
 import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 
 @Component({
   selector: 'app-sports-news',
   templateUrl: './sports-news.component.html',
-  styleUrls: ['./sports-news.component.css']
+  styleUrls: ['./sports-news.component.css'],
+  animations : [
+    // Here we are defining what are the states our panel can be in 
+    // and the style each state corresponds to.
+      trigger('panelState', [
+      state('closed', style({ height: '32px', overflow: 'hidden' })),
+      state('open', style({ height: '*' })),
+      transition('closed <=> open', animate('300ms ease-in-out')),
+    ]),
+  ],
+
 })
 export class SportsNewsComponent {
   searchQuery!: string
@@ -23,9 +35,11 @@ export class SportsNewsComponent {
   allResponses: string[] = []
   folded = 'closed'
   searchForm!: FormGroup
+  shareNews!: FormGroup
+  recipient!: string
 
-  constructor(private newsSvc:NewsService, private activatedRoute: ActivatedRoute, private router: Router,
-    private userSvc: UserService, private firebaseSvc: FirebaseService, private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private newsSvc: NewsService, private userSvc: UserService, private router: Router,
+    private firebaseSvc: FirebaseService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
       this.params$ = this.activatedRoute.params.subscribe((params) => {
@@ -47,6 +61,7 @@ export class SportsNewsComponent {
         }
         
       )
+      this.searchForm = this.createForm()
     }
 
     submitQuery() {
@@ -82,11 +97,25 @@ export class SportsNewsComponent {
       }
     }
 
+    toggleFold(i: number) {
+      this.folded = this.folded === 'open' ? 'closed' : 'open'
+      this.results[i].toggle = this.folded
+      this.shareNews = this.fb.group({
+          recipient: this.fb.control<string>(''),
+        })
+      
+    }
+
     share(i: number): void {
       this.selectedNews = this.results[i] as News
       // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-      this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
-        "test")
+      console.info(this.shareNews.value['recipient'])
+      this.recipient = this.shareNews.value['recipient'] as string
+      this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+        this.recipient, this.selectedNews.urlImage)
+      this.shareNews.reset()
+      this.ngOnInit()
+      this.folded='closed'
   
     }
 

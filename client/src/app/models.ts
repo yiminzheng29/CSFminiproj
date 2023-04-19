@@ -10,7 +10,7 @@ export interface News {
     content: string
     likes?: number
     liked?: boolean
-    comments?: comments[]
+    toggle?: string
 }
 
 export interface Issue {
@@ -41,6 +41,7 @@ export interface User {
     email: string
     profileImage: File
     token: string
+    profileImageUrl: string
 }
 
 export interface CanLeave {

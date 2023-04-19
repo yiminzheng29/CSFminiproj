@@ -29,10 +29,11 @@ mat-toolbar {
 }
 
 .mat-elevation-z4 {
-  height: 500px !important;
+  height: auto;
   margin-bottom: 20px;
   border-radius: 20px;
 }
+
 
 .example-card{
     margin-top: 4px;

@@ -113,6 +113,7 @@ public class UserController {
         if (opt.isEmpty()) {
             return null;
         }
+        System.out.println(opt.get().getEmail());
 
         return ResponseEntity.ok(opt.get());
     }

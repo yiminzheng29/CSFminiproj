@@ -15,57 +15,56 @@
       </mat-form-field>
     </form>
   </div>
+
+
+  <mat-card appearance="outlined" class="example-card" *ngFor="let article of results; let i = index">
+  <mat-card-header>
+    <!-- <div mat-card-avatar [ngStyle]="{
+        'background-image':
+          'url(../assets/images/' + article.source.id + '.png)'
+      }" class="example-header-image"></div> -->
+    <mat-card-title class="title">{{ article.title }}</mat-card-title>
+    <mat-card-subtitle>{{ article.sourceName }} - {{ article.author }}</mat-card-subtitle>
+    <mat-card-subtitle>Published at: {{ article.publishedAt }}</mat-card-subtitle>
+  </mat-card-header>
+  <br><br>
+  <div align="center">
+      <img mat-card-image class="img-article" src="{{ article.urlImage }}" />
+  </div>
   
-  <mat-card appearance="outlined" class="example-card"
-    *ngFor="let article of results; let i = index">
-    <mat-card-header>
-      <!-- <div mat-card-avatar [ngStyle]="{
-          'background-image':
-            'url(../assets/images/' + article.source.id + '.png)'
-        }" class="example-header-image"></div> -->
-      <mat-card-title class="title">{{ article.title }}</mat-card-title>
-      <mat-card-subtitle>{{ article.sourceName }} - {{ article.author }}</mat-card-subtitle>
-      <mat-card-subtitle>Published at: {{ article.publishedAt }}</mat-card-subtitle>
-    </mat-card-header>
-    
-    <div align="center">
-        <img mat-card-image class="img-article" src="{{ article.urlImage }}" />
-    </div>
-    
-    
-    <mat-card-content>
-      <p>
-        {{ article.description }}
-      </p>
-    </mat-card-content>
-    <mat-card-actions class="action-buttons">
-      <div class="card-icons">
-        <button mat-button color="white" (click)="likeNews(i)">
-          <div *ngIf="article.liked">
-            <mat-icon class="icon-color">thumb_up_alt</mat-icon>
-          </div>
-          <!-- <div *ngIf="!article.newsId"> -->
-          <div *ngIf="!article.liked">
+  <br><br>
+  <mat-card-content>
+    <p>
+      {{ article.description }}
+    </p>
+    <br><br>
+  </mat-card-content>
+  <mat-card-actions class="action-buttons">
+    <div class="card-icons" align="center">
+      <button mat-button color="white" (click)="likeNews(i)">
+        <div *ngIf="article.liked">
+          <mat-icon class="icon-color">thumb_up_alt</mat-icon>
+        </div>
+        <!-- <div *ngIf="!article.newsId"> -->
+        <div *ngIf="!article.liked">
 
-            <mat-icon>thumb_up_alt</mat-icon> 
-          </div> {{ article.likes }} Likes
-        </button>
-        <!-- <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>textsms</mat-icon>Comment</button> -->
-        <a mat-button color="white" href="{{ article.url }}" target="_blank"><mat-icon>visibility</mat-icon> More</a>
-        <button mat-button color="white" (click)="share(i)"><mat-icon>share</mat-icon> Share</button>
-      </div>
+          <mat-icon>thumb_up_alt</mat-icon> 
+        </div> {{ article.likes }} Likes
+      </button>
+      <!-- <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>textsms</mat-icon>Comment</button> -->
+      <a mat-button color="white" href="{{ article.url }}" target="_blank"><mat-icon>visibility</mat-icon> More</a>
+      <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>share</mat-icon> Share</button>
+    </div>
     </mat-card-actions>
-    <div [@panelState]="folded" *ngIf="this.folded=='open'">
-      <!-- <form [formGroup]="commentField"  (ngSubmit)="submitComment(i)"> 
-        <mat-form-field>
-          <input matInput type="text" formControlName="comment" class="full-width">
-        </mat-form-field>
-        <button mat-button type="submit" [disabled]="!this.commentField.valid">Submit</button>
-        
-    {{article.comments}}
-      </form> -->
-    </div>
-  </mat-card>
-
-
+    
+    <div [@panelState]="folded" *ngIf="article.toggle=='open'">
+    <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
+      <mat-form-field>
+        <input matInput type="text" formControlName="recipient" class="full-width">
+      </mat-form-field>
+      <button mat-button type="submit" [disabled]="!this.shareNews.valid">Submit</button>
+      
+    </form>
+  </div>
+</mat-card>
 </body>

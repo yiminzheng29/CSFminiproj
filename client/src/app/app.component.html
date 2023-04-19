@@ -54,14 +54,23 @@
       </nav>
     
   </header> -->
+
+
   
   <header>
-      <h2 class="logo">WhatsNew</h2>
+      <div *ngIf="firstname">
+        <h2 class="logo" [routerLink]="['/news']">WhatsNew</h2>
+      </div>
+      <div *ngIf="!firstname">
+        <h2 class="logo" [routerLink]="['/home']">WhatsNew</h2>
+      </div>
+      
       <ngx-loading-bar color="white" height="4px"></ngx-loading-bar>
       <nav  *ngIf="firstname" class="navbar navbar-expand-lg navigation">
         <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+
           <!-- <button *ngIf="!firstname" class="btnLogin-popup">Login/Register</button> -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <li class="nav-item">
@@ -71,14 +80,23 @@
               <a class="nav-link" *ngIf="firstname" [routerLink]="['/savedNews', username]">Your Saved News</a>
             </li>
             <li class="nav-item">
+
               <a class="nav-link" *ngIf="firstname" [routerLink]="['/users', username]">Hello, {{firstname}}!</a>
+              
             </li>
+            <div class="e-avatar e-avatar-small e-avatar-circle">
+ 
+              <img src="{{profilePic}}" />
+           
+            </div>
+
         </div>
           <br>
         <button *ngIf="firstname" class="btnLogin-popup" (click)="logout()">Logout</button>
       </nav>
       
   </header>
+
   <!-- <ngx-loading-bar color="#CD67BA" height="4px"></ngx-loading-bar>
   <nav class="navbar navbar-expand-lg navbar-light bg-light navigation">
     <a class="navbar-brand" href="#">Navbar</a>

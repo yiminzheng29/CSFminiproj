@@ -4,11 +4,24 @@ import { Subscription } from 'rxjs';
 import { News } from '../models';
 import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FirebaseService } from '../firebase.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 
 @Component({
   selector: 'app-user-news',
   templateUrl: './user-news.component.html',
-  styleUrls: ['./user-news.component.css']
+  styleUrls: ['./user-news.component.css'],
+  animations : [
+    // Here we are defining what are the states our panel can be in 
+    // and the style each state corresponds to.
+      trigger('panelState', [
+      state('closed', style({ height: '32px', overflow: 'hidden' })),
+      state('open', style({ height: '*' })),
+      transition('closed <=> open', animate('300ms ease-in-out')),
+    ]),
+  ],
 })
 export class UserNewsComponent implements OnInit{
 
@@ -20,14 +33,18 @@ export class UserNewsComponent implements OnInit{
   params$!: Subscription
   paramName!: string
   userSub$!: Subscription
+  shareNews!: FormGroup
+  recipient!: string
+  selectedNews!: News
+  folded = 'closed'
 
   constructor(private newsSvc: NewsService, private activatedRoute: ActivatedRoute, 
-    private router: Router, private userSvc: UserService) {}
+    private router: Router, private userSvc: UserService, private fb: FormBuilder, private firebaseSvc: FirebaseService) {}
 
-  toggleGridColumns() {
+  // toggleGridColumns() {
    
-    this.gridColumns = this.gridColumns === 3 ? 4 : 3;
-  }
+  //   this.gridColumns = this.gridColumns === 3 ? 4 : 3;
+  // }
 
   ngOnInit(): void {
     // to validate login
@@ -65,6 +82,28 @@ export class UserNewsComponent implements OnInit{
       this.allNewsByUser[i] = await this.newsSvc.saveNews(this.allNewsByUser[i], this.username)
       console.info("liking post", this.allNewsByUser[i].newsId)
     }
+  }
+
+  toggleFold(i: number) {
+    this.folded = this.folded === 'open' ? 'closed' : 'open'
+    this.allNewsByUser[i].toggle = this.folded
+    this.shareNews = this.fb.group({
+        recipient: this.fb.control<string>(''),
+      })
+    
+  }
+
+  share(i: number): void {
+    this.selectedNews = this.allNewsByUser[i] as News
+    // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
+    console.info(this.shareNews.value['recipient'])
+    this.recipient = this.shareNews.value['recipient'] as string
+    this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+      this.recipient, this.selectedNews.urlImage)
+    this.shareNews.reset()
+    this.ngOnInit()
+    this.folded='closed'
+
   }
 
 }

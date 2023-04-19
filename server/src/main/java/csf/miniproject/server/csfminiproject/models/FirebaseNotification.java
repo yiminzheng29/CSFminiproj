@@ -4,6 +4,8 @@ public class FirebaseNotification {
     private String title;
     private String message;
     private String target;
+    private String urlImage;
+
 
     public String getTitle() {
         return title;
@@ -22,5 +24,11 @@ public class FirebaseNotification {
     }
     public void setTarget(String target) {
         this.target = target;
+    }
+    public String getUrlImage() {
+        return urlImage;
+    }
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

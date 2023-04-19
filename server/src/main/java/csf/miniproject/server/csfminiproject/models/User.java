@@ -95,6 +95,7 @@ public class User {
         // user.setDob(rs.getDate("dob"));
         user.setEmail(rs.getString("email"));
         user.setProfileImage(rs.getBytes("profileImage"));
+        user.setProfileImageUrl(rs.getString("profileImageUrl"));
         // user.setPhone(rs.getString("phone"));
         
 

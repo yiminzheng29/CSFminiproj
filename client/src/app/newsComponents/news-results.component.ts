@@ -6,6 +6,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { UserService } from '../user.service';
 import { News } from '../models';
 import { FirebaseService } from '../firebase.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-news-results',
@@ -33,9 +34,11 @@ export class NewsResultsComponent implements OnInit, OnDestroy{
   toggle = false
   allResponses: string[] = []
   folded = 'closed'
+  shareNews!: FormGroup
+  recipient!: string
 
   constructor(private newsSvc:NewsService, private activatedRoute:ActivatedRoute, private router: Router,
-    private userSvc: UserService, private firebaseSvc: FirebaseService) {}
+    private userSvc: UserService, private firebaseSvc: FirebaseService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
       this.params$ = this.activatedRoute.params.subscribe((params) => {
@@ -80,26 +83,25 @@ export class NewsResultsComponent implements OnInit, OnDestroy{
       }
     }
 
-    // toggleFold(i: number) {
-    //   this.folded = this.folded === 'open' ? 'closed' : 'open'
+    toggleFold(i: number) {
+      this.folded = this.folded === 'open' ? 'closed' : 'open'
+      this.results[i].toggle = this.folded
+      this.shareNews = this.fb.group({
+          recipient: this.fb.control<string>(''),
+        })
       
-    //   console.info(this.results[i])
-    //   // this.commentField = this.fb.group({
-    //   //     username: this.username,
-    //   //     firstname: this.userSvc.userValue?.firstname,
-    //   //     lastname: this.userSvc.userValue?.lastname,
-    //   //     comment: this.fb.control<string>('',[Validators.minLength(1), Validators.required]),
-    //   //     // published: Date.now().toString(),
-    //   //     // newsId: this.newsId
-    //   //   })
-      
-    // }
+    }
 
     share(i: number): void {
       this.selectedNews = this.results[i] as News
       // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-      this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
-        "test")
+      console.info(this.shareNews.value['recipient'])
+      this.recipient = this.shareNews.value['recipient'] as string
+      this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+        this.recipient, this.selectedNews.urlImage)
+      this.shareNews.reset()
+      this.ngOnInit()
+      this.folded='closed'
   
     }
 

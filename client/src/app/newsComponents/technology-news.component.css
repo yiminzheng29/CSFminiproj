@@ -1,6 +1,6 @@
 .example-card{
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     margin-left: 20px;
     margin-right: 20px;
   }
@@ -10,6 +10,7 @@
     height: auto;
     align-items: center;
     max-width: 100%;
+
     }
   
   .icon-color{

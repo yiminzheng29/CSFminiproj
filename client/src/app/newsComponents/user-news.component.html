@@ -5,6 +5,7 @@
       <span *ngIf="gridColumns === 3">Four Columns</span>
     </button>
   </mat-toolbar> -->
+ 
   <div class="head"></div>
   <link rel="stylesheet" href="user-news.component.css">
   <!-- <img src="/assets/images/user-news.png" style="width: 100%; height: auto;"> -->
@@ -40,10 +41,24 @@
                   </div> {{ article.likes }} Likes
                 </button>
                 <a mat-button color="white" href="{{ article.url }}" target="_blank"><mat-icon>visibility</mat-icon> More</a>
-                <button mat-button color="white"><mat-icon>share</mat-icon> Share</button>
+                <!-- <button mat-button color="white"><mat-icon>share</mat-icon> Share</button> -->
+                <button mat-button color="white" (click)="toggleFold(i)"><mat-icon>share</mat-icon> Share</button>
+                
               </mat-card-actions>
+              
+
+            </div>
+            <div [@panelState]="folded" *ngIf="article.toggle=='open'">
+              <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
+                <mat-form-field>
+                  <input matInput type="text" formControlName="recipient" class="full-width">
+                </mat-form-field>
+                <button mat-button type="submit" [disabled]="!this.shareNews.valid">Submit</button>
+                
+              </form>
             </div>
           </mat-card>
+          
         </div>
       </div>
     </div>

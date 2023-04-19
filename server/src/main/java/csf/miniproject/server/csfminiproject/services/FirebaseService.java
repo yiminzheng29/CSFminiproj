@@ -34,6 +34,7 @@ public class FirebaseService {
                                         .setNotification(
                                                 WebpushNotification.builder()
                                                         .setTitle(notification.getTitle())
+                                                        .setImage(notification.getUrlImage())
                                                         .setBody(notification.getMessage())
                                                         .build()
                                         ).build()

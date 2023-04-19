@@ -20,6 +20,7 @@ export class AppComponent implements OnInit{
   userSub$!: Subscription
   firstname!: string
   username!: string
+  profilePic!: string
 
 
   ngOnInit(): void {
@@ -28,11 +29,15 @@ export class AppComponent implements OnInit{
         this.firstname = values?.firstname as string
         this.username = values?.username as string
       })
+      
 
       this.requestPermission();
       this.listen();
+      this.profilePic = "https://bucketym1.sgp1.digitaloceanspaces.com/"+this.username
+
 
   }
+
 
   requestPermission() {
     const messaging = getMessaging();
@@ -49,6 +54,7 @@ export class AppComponent implements OnInit{
         console.log('An error occurred while retrieving token. ', err);
     });
   }
+
   listen() {
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {

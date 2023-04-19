@@ -16,7 +16,6 @@ import { NewsService } from './news.service';
 import { MaterialModule } from './material.module';
 import { UserNewsComponent } from './newsComponents/user-news.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CommentsComponent } from './newsComponents/comments.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommentService } from './comments.service';
@@ -27,13 +26,11 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from "firebase/app";
 import { FirebaseService } from './firebase.service';
-import { SearchNewsComponent } from './newsComponents/search-news.component';
 import { NewsResultsComponent } from './newsComponents/news-results.component';
 import { EntertainmentNewsComponent } from './newsComponents/entertainment-news.component';
 import { SportsNewsComponent } from './newsComponents/sports-news.component';
 import { TechnologyNewsComponent } from './newsComponents/technology-news.component';
 import { BusinessNewsComponent } from './newsComponents/business-news.component';
-import { TestNewsComponent } from './newsComponents/test-news.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 initializeApp(environment.firebase);
 
@@ -48,7 +45,6 @@ const routes: Routes = [
   {path:'news/sports', component: SportsNewsComponent},
   {path:'news/business', component: BusinessNewsComponent},
   {path:'news/technology', component: TechnologyNewsComponent},
-  {path:'search', component: SearchNewsComponent},
   {path:'search/:searchQuery', component: NewsResultsComponent},
   {path:'savedNews/:username', component: UserNewsComponent},
   {path:'users/:username', component: EditUserComponent},
@@ -65,15 +61,11 @@ const routes: Routes = [
     RegisterComponent,
     EditUserComponent,
     UserNewsComponent,
-    CommentsComponent,
-    SearchNewsComponent,
     NewsResultsComponent,
     EntertainmentNewsComponent,
     SportsNewsComponent,
     TechnologyNewsComponent,
     BusinessNewsComponent,
-    TestNewsComponent,
-
   ],
   imports: [
     BrowserModule,

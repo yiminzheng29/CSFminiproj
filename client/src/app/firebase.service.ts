@@ -50,12 +50,13 @@ export class FirebaseService {
         
     }
 
-    public shareNews(message: string, sender: string, recipient: string) {
+    public shareNews(message: string, sender: string, recipient: string, urlImage: string) {
 
         const content = new FormData()
         content.set("message", message)
         content.set("sender", sender)
         content.set("recipient", recipient)
+        content.set("urlImage", urlImage)
         console.info(content)
         // const params = new HttpParams()
         // params.set("recipient", recipient)

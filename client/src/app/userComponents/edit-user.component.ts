@@ -59,6 +59,7 @@ export class EditUserComponent implements OnInit {
   }
 
   deleteUser() {
+    console.info("delete", this.username)
     this.userSvc.delete(this.username as string)
   }
 
