@@ -213,4 +213,30 @@ public class NewsRepository {
         }
         return newsByUser;
     }
+
+    public List<News> selectTopHeadlines(Integer limit) {
+        List<News> results = new LinkedList<>();
+        List<String> newsId = new LinkedList<>();
+        SqlRowSet rs = template.queryForRowSet(SQL_GET_TOP_NEWS, limit);
+        while (rs.next()) {
+            newsId.add(rs.getString("newsId"));
+        }
+
+        for (String id: newsId) {
+            SqlRowSet result = template.queryForRowSet(SQL_GET_USER_NEWS, id);
+            if (result.next()) {
+                News news = News.create(result);
+                news.setLiked(true);
+
+                SqlRowSet likes = template.queryForRowSet(SQL_GET_LIKES, id);
+                if (likes.next()) {
+                    news.setLikes(likes.getInt("likes"));
+                }
+                results.add(news);
+            }
+        }
+        return results;
+
+        
+    }
 }

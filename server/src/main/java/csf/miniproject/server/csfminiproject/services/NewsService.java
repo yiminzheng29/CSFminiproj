@@ -119,4 +119,8 @@ public class NewsService {
         return newsRepo.getNewsByUser(username);
     }
 
+    public List<News> selectTopHeadlines(Integer limit) {
+        return newsRepo.selectTopHeadlines(limit);
+    }
+
 }

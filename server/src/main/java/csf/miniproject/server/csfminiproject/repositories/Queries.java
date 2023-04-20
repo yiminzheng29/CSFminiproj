@@ -56,6 +56,10 @@ public class Queries {
         values (?, ?)
             """;
 
+    public static final String SQL_GET_TOP_NEWS = """
+        select * from likesRecord order by likes desc limit ?;
+        """;
+
     // public static final String SQL_CHECK_IF_USER_LIKED_NEWS = """
     //     select * from newsRecord where newsId = ? and username = ?
     //         """;
