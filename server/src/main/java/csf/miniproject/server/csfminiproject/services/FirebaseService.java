@@ -45,7 +45,6 @@ public class FirebaseService {
     }
 
     public String addFriendNotification(FirebaseNotification notification) throws FirebaseMessagingException {
-       
         Message message = Message.builder()
                         .setWebpushConfig(
                                 WebpushConfig.builder()

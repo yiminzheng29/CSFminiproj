@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import csf.miniproject.server.csfminiproject.models.News;
 import static csf.miniproject.server.csfminiproject.repositories.Queries.*;
@@ -19,6 +20,7 @@ public class NewsRepository {
     @Autowired
     private JdbcTemplate template;
 
+    @Transactional(rollbackFor = NewsException.class)
     public List<News> getLikes(List<News> news, String username) {
         
         SqlRowSet rs = template.queryForRowSet(SQL_CHECK_POSTS_LIKED_BY_USER, username);
@@ -50,7 +52,7 @@ public class NewsRepository {
         return news;
     }
 
-    // check which posts are liked by user
+    @Transactional(rollbackFor = NewsException.class)
     public List<String> checkPostsLikedByUser(String username) {
         SqlRowSet rs = template.queryForRowSet(SQL_CHECK_POSTS_LIKED_BY_USER, username);
         List<String> results = new LinkedList<>();
@@ -61,7 +63,7 @@ public class NewsRepository {
         return results;
     }
 
-        // save liked news into sql - news & create newsId
+    @Transactional(rollbackFor = NewsException.class)
     public News likeNews(News news, String username) {
             // check if news exists in db
         SqlRowSet result = template.queryForRowSet(SQL_CHECK_IF_NEWS_EXIST, news.getTitle());
@@ -112,7 +114,7 @@ public class NewsRepository {
             return news;
         }
 
-    // save liked news into sql - news & create newsId
+    @Transactional(rollbackFor = NewsException.class)
     public News saveNews(News news) {
         // check if news exists in db
         SqlRowSet result = template.queryForRowSet(SQL_CHECK_IF_NEWS_EXIST, news.getTitle());
@@ -135,6 +137,7 @@ public class NewsRepository {
         return news;
     }
 
+    @Transactional(rollbackFor = NewsException.class)
     public void unlikeNews(String newsId, String username) {
 
         // update likes record table in sql
@@ -153,6 +156,7 @@ public class NewsRepository {
 
     }
 
+    @Transactional(rollbackFor = NewsException.class)
     public List<News> getNewsByUser(String username) {
         List<News> newsByUser = new LinkedList<>();
         List<String> records = new LinkedList<>();
@@ -180,6 +184,7 @@ public class NewsRepository {
         return newsByUser;
     }
 
+    @Transactional(rollbackFor = NewsException.class)
     public List<News> selectTopHeadlines(Integer limit, String username) {
         List<News> results = new LinkedList<>();
         List<String> newsId = new LinkedList<>();

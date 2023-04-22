@@ -35,14 +35,9 @@ public class FirebaseController {
     @PostMapping(path = "/news/sendNews",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> sendNotification(@RequestPart String recipient, @RequestPart String sender, @RequestPart String message, @RequestPart String urlImage) throws FirebaseMessagingException  {
-        System.out.println(recipient);
-        System.out.println(message);
-        System.out.println(sender);
-        System.out.println(urlImage);
-
         FirebaseNotification fNotification = new FirebaseNotification();
         fNotification.setTitle(message);
-        fNotification.setMessage(sender);
+        fNotification.setMessage("From: " + sender);
         fNotification.setUrlImage(urlImage);
         Optional<String> token = firebaseSvc.getToken(recipient);
 

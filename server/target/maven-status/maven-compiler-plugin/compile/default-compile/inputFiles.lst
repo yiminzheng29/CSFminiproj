@@ -1,7 +1,9 @@
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/CsfminiprojectApplication.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/services/FirebaseService.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/services/GmailService.java
+/Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/repositories/NewsException.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/controllers/FirebaseController.java
+/Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/repositories/UserException.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/services/NewsService.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/controllers/NewsController.java
 /Users/Yimin/csf/CSFminiproj/server/src/main/java/csf/miniproject/server/csfminiproject/repositories/NewsRepository.java

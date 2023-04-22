@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.json.Json;
@@ -34,6 +35,7 @@ public class UserRepository {
     private DataSource ds;
 
     // save user details in database
+    @Transactional(rollbackFor = UserException.class)
     public void saveUser(MultipartFile file, String username, String password, String email, String firstname, String lastname, String profileImageUrl) throws Exception{
         try (Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL_CREATE_USER)) {
@@ -53,6 +55,7 @@ public class UserRepository {
     }
 
     // for authenticating user
+    @Transactional(rollbackFor = UserException.class)
     public Optional<User> authenticate(String payload) {
         StringReader reader = new StringReader(payload);
         JsonReader jr = Json.createReader(reader);
@@ -77,6 +80,7 @@ public class UserRepository {
     }
 
     // get user details in the user profile page
+    @Transactional(rollbackFor = UserException.class)
     public Optional<User> getUserDetails(String username) {
         
         // User user = new User();
@@ -98,7 +102,7 @@ public class UserRepository {
     //     template.update(SQL_UPDATE_USER, user.getPassword(), user.getFirstname(), 
     //         user.getLastname(), user.getDob(), user.getEmail(), user.getPhone(), user.getUsername());
     // }
-
+    @Transactional(rollbackFor = UserException.class)
     public void updateUser(String username, String password, String firstname, String lastname, String email, MultipartFile file, String profileImageUrl) throws Exception{
         try (Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL_UPDATE_USER)) {
@@ -118,14 +122,17 @@ public class UserRepository {
         // template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword(), user.getFirstname(), user.getLastname(), user.getDob(), user.getEmail(), user.getPhone());
     }
 
+    @Transactional(rollbackFor = UserException.class)
     public void deleteUser(String username) {
         template.update(SQL_DELETE_USER, username);
     }
 
+    @Transactional(rollbackFor = UserException.class)
     public void addFriends(String username, String friendsUsername) {
         template.update(SQL_ADD_FRIENDS, username, friendsUsername);
     }
 
+    @Transactional(rollbackFor = UserException.class)
     public List<User> getFriends(String username) {
         List<String> friends = new LinkedList<>();
         List<User> results = new LinkedList<>();
@@ -146,6 +153,7 @@ public class UserRepository {
         return results;
     }
 
+    @Transactional(rollbackFor = UserException.class)
     public List<User> searchForUsers(String keyword) throws SQLException{
         List<User> results = new LinkedList<>();
         String query = "%".concat(keyword).concat("%");
@@ -157,10 +165,12 @@ public class UserRepository {
         return results;
     }
     
+    @Transactional(rollbackFor = UserException.class)
     public void deleteFriend(String username, String friendsUsername) {
         template.update(SQL_DELETE_FRIEND, username, friendsUsername);
     }
 
+    @Transactional(rollbackFor = UserException.class)
     public List<User> getNonFriends(String username) throws SQLException{
         List<String> friends = new LinkedList<>();
         List<User> results = new LinkedList<>();
