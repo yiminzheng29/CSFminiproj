@@ -13,7 +13,7 @@ export class NewsService {
         const params = new HttpParams()
             .set("country", country)
             .set("username", username)
-        return firstValueFrom(this.http.get<string[]>('http://localhost:8080/api/news/authors', {params}))
+        return firstValueFrom(this.http.get<string[]>('/api/news/authors', {params}))
     }
 
     public getAllNews(country: string, username: string): Promise<News[]> {
@@ -21,7 +21,7 @@ export class NewsService {
         const params = new HttpParams()
             .set("country", country)
             .set("username", username)
-        return firstValueFrom(this.http.get<News[]>('http://localhost:8080/api/news/allNews', {params}))
+        return firstValueFrom(this.http.get<News[]>('/api/news/allNews', {params}))
     }
 
     public likeNews(news: News, username: string): Promise<News> {
@@ -35,7 +35,7 @@ export class NewsService {
         content.set("publishedAt", news.publishedAt.toString())
         content.set("content", news.content)
         content.set("username", username)
-        return firstValueFrom(this.http.post<News>('http://localhost:8080/api/like', content))
+        return firstValueFrom(this.http.post<News>('/api/like', content))
     }
 
     public saveNews(news: News, username: string): Promise<News> {
@@ -49,11 +49,11 @@ export class NewsService {
         content.set("publishedAt", news.publishedAt.toString())
         content.set("content", news.content)
         content.set("username", username)
-        return firstValueFrom(this.http.post<News>('http://localhost:8080/api/save', content))
+        return firstValueFrom(this.http.post<News>('/api/save', content))
     }
 
     public unlikeNews(newsId: string, username: string) {
-        this.http.delete(`http://localhost:8080/api/dislike/${newsId}?username=${username}`, {responseType: 'text'})
+        this.http.delete(`/api/dislike/${newsId}?username=${username}`, {responseType: 'text'})
         .subscribe(value => {
             console.info(value)
         })
@@ -61,16 +61,15 @@ export class NewsService {
 
     public getAllNewsByUsername(username: string): Promise<News[]> {
         return firstValueFrom(
-            this.http.get<News[]>(`http://localhost:8080/api/news/${username}`)
+            this.http.get<News[]>(`/api/news/${username}`)
         )
     }
 
     public searchNews(searchQuery: string, username: string): Promise<News[]> {
         const params = new HttpParams()
             .set("username", username)
-        console.info(params)
         return firstValueFrom(
-            this.http.get<News[]>(`http://localhost:8080/api/news/${searchQuery}/results`, {params})
+            this.http.get<News[]>(`/api/news/${searchQuery}/results`, {params})
         )
     }
 
@@ -78,7 +77,7 @@ export class NewsService {
         const params = new HttpParams()
             .set("username", username)
             return firstValueFrom(
-                this.http.get<News[]>(`http://localhost:8080/api/topHeadlines/${limit}`, {params})
+                this.http.get<News[]>(`/api/topHeadlines/${limit}`, {params})
             )
         }
 }

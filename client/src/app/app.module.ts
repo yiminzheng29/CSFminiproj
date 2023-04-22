@@ -18,11 +18,6 @@ import { UserNewsComponent } from './newsComponents/user-news.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CommentService } from './comments.service';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from "firebase/app";
 import { FirebaseService } from './firebase.service';
@@ -40,9 +35,6 @@ initializeApp(environment.firebase);
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
-  // {path:'add-issue', component: IssueReportComponent},
-  // {path:'issues/:issueNo', component: RetrieveIssueComponent},
-  // {path:'update/:issueNo', component: IssueDetailsComponent},
   {path:'register', component: RegisterComponent},
   {path:'news', component: NewsComponent},
   {path:'topNews', component: TopHeadlinesComponent},
@@ -89,15 +81,9 @@ const routes: Routes = [
     FlexLayoutModule,
     LoadingBarRouterModule,
     NgbModule,
-    RouterModule.forRoot( routes, {useHash: true}),
-    // AngularFireDatabaseModule,
-    // AngularFireStorageModule,
-    // AngularFireModule.initializeApp(environment.firebase),
-    // AngularFireMessagingModule
-    
-
+    RouterModule.forRoot( routes, {useHash: true})
   ],
-  providers: [UserService, NewsService, CommentService, FirebaseService],
+  providers: [UserService, NewsService, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

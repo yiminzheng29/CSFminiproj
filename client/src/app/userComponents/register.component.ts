@@ -35,11 +35,7 @@ export class RegisterComponent implements OnInit{
     
     this.userSvc.createUser(user)
     this.username = this.registrationForm.value['username']
-    console.info(this.username)
     this.firebaseSvc.requestPermission(this.username)
-    // console.info("token: ", this.token as string)
-    // console.info(user.username)
-    // this.firebaseSvc.saveToken(this.token, user.username)
     this.router.navigate(['/news'])
   }
 
@@ -49,10 +45,8 @@ export class RegisterComponent implements OnInit{
       password: this.fb.control('', [Validators.required, Validators.minLength(4)]),
       firstname: this.fb.control('', [Validators.required]), 
       lastname: this.fb.control('', [Validators.required]), 
-      // dob: this.fb.control('', [Validators.required]),
       email: this.fb.control('', [Validators.required, Validators.email]),
       profileImage: this.fb.control('', [Validators.required])
-      // phone: this.fb.control('', [Validators.required])
     })
   }
 

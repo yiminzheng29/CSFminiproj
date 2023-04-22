@@ -13,25 +13,6 @@ export interface News {
     toggle?: string
 }
 
-export interface Issue {
-    issueNo: number
-    title: string
-    description: string
-    priority: 'low' | 'high'
-    type: 'Feature' | 'Bug' | 'Documentation'
-    completed?: Date
-}
-
-// export interface User {
-//     username?: string
-//     password?: string
-//     firstname?: string
-//     lastname?: string
-//     dob?: Date
-//     email?: string
-//     phone?: string
-//     token?: string
-// }
 
 export interface User {
     username: string
@@ -51,14 +32,4 @@ export interface CanLeave {
 export interface Response {
     newsId: string
     username: string
-}
-
-export interface comments {
-    commentId?: string
-    username: string
-    firstname: string
-    lastname: string
-    comment: string
-    publishedAt: Date
-    newsId?: string
 }

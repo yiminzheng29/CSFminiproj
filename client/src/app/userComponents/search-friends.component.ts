@@ -29,7 +29,6 @@ export class SearchFriendsComponent implements OnInit, OnDestroy{
     this.yourFriends = []
     this.params$ = this.activatedRoute.params.subscribe((params) => {
       this.keyword = params['keyword']
-      console.info(this.keyword)
     })
       //to validate login
     if (localStorage.getItem("user") == null) {
@@ -52,7 +51,6 @@ export class SearchFriendsComponent implements OnInit, OnDestroy{
     })
     this.index = this.allFriends.indexOf(this.username)
     this.searchResults.splice(this.index, 1) // remove yourself from list of friends
-    console.info(this.searchResults)
   }
 
   async friendsList() {
@@ -60,7 +58,6 @@ export class SearchFriendsComponent implements OnInit, OnDestroy{
     this.friends.forEach(x => {
       this.yourFriends.push(x.username as string)
     })
-    console.info(this.yourFriends)
   }
 
   deleteFriend(friendUsername: string) {

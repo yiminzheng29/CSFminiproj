@@ -1,11 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from './models';
 import { UserService } from './user.service';
-import { HomeComponent } from './userComponents/home.component';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { environment } from "../environments/environment";
-import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +21,6 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(): void {
-      console.info("In app comp")
       this.userSub$ = this.userSvc.user.subscribe(values => {
         this.firstname = values?.firstname as string
         this.username = values?.username as string
@@ -46,7 +42,6 @@ export class AppComponent implements OnInit{
        (currentToken) => {
          if (currentToken) {
            console.log("Hurraaa!!! we got the token.....");
-           console.log(currentToken);
          } else {
            console.log('No registration token available. Request permission to generate one.');
          }

@@ -54,7 +54,6 @@ export class TopHeadlinesComponent implements OnInit{
       .then(
         (ans) => {
           this.results = ans
-          console.info(this.results)
         }
       )
       this.searchForm = this.createForm()
@@ -79,7 +78,6 @@ export class TopHeadlinesComponent implements OnInit{
 
     submitQuery() {
       this.searchQuery = this.searchForm.value['searchQuery'] as string
-      console.info(this.searchQuery)
       this.router.navigate(['/search/',this.searchQuery])
     }
   
@@ -95,17 +93,14 @@ export class TopHeadlinesComponent implements OnInit{
         this.username = value?.username as string
       })
       this.selectedNews = this.results[i] as News
-      console.info("username: ", this.username)
-      console.info("news: ", this.selectedNews)
+
       if (this.selectedNews.newsId?.length == 6 && this.selectedNews.liked == true) {
         console.info("unliking post", this.results[i].newsId)
         this.newsSvc.unlikeNews(this.results[i].newsId as string, this.username)
-        // this.allNews[i].liked=false
         this.ngOnInit() // refreshes the browser
       }
       else {
         this.results[i] = await this.newsSvc.likeNews(this.results[i], this.username)
-        // this.allNews[i].liked=true
         console.info("liking post", this.results[i].newsId)
       }
       this.ngOnInit()
@@ -119,22 +114,4 @@ export class TopHeadlinesComponent implements OnInit{
         })
       
     }
-
-    // share(i: number): void {
-    //   this.selectedNews = this.results[i] as News
-    //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-    //   console.info(this.shareNews.value['recipient'])
-    //   this.recipient = this.shareNews.value['recipient'] as string
-    //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-    //     this.recipient, this.selectedNews.urlImage)
-    //   this.shareNews.reset()
-    //   this.ngOnInit()
-    //   this.folded='closed'
-  
-    // }
-
-  // ngOnDestroy(): void {
-  //     this.params$.unsubscribe()
-  //     this.userSub$.unsubscribe()
-  // }
 }

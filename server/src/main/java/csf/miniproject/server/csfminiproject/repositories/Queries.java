@@ -1,10 +1,6 @@
 package csf.miniproject.server.csfminiproject.repositories;
 
 public class Queries {
-    
-    // public static final String SQL_CREATE_USER = """
-    //     insert into user(username, password, firstname, lastname, dob, email, phone) values(?,sha1(?),?,?,?,?,?)
-    //         """;
 
     public static final String SQL_CREATE_USER = """
         insert into user(username, password, firstname, lastname, email, profileImage, profileImageUrl) values(?,sha1(?),?,?,?,?,?)
@@ -15,11 +11,6 @@ public class Queries {
         select count(*) > 0 as auth_state from user where 
         username = ? and password = sha1(?)
             """;
-
-    // public static final String SQL_AUTHENTICATE_USER = """
-    //     select count(*) > 0 as auth_state from user where 
-    //     username = ?
-    //         """;
 
     public static final String SQL_AUTHENTICATE_USER_0 = """
         select * from user where username = ? and password = sha1(?)
@@ -79,10 +70,6 @@ public class Queries {
     public static final String SQL_GET_TOP_NEWS = """
         select * from likesRecord order by likes desc limit ?;
         """;
-
-    // public static final String SQL_CHECK_IF_USER_LIKED_NEWS = """
-    //     select * from newsRecord where newsId = ? and username = ?
-    //         """;
 
     public static final String SQL_SAVE_LIKES_RECORD = """
         insert into likesRecord(newsId, likes)

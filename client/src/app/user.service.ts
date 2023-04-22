@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, firstValueFrom, Observable } from "rxjs";
 import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { CanLeave, User } from "./models";
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +37,7 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
         content.set("email", user.email)
         
 
-        return firstValueFrom(this.http.post<User>('http://localhost:8080/api/createUser', content))
+        return firstValueFrom(this.http.post<User>('/api/createUser', content))
     }
 
     canDeactivate(component: CanLeave, currentRoute: ActivatedRouteSnapshot, currentState: RouterStateSnapshot, nextState: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
@@ -54,12 +54,10 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
 
     // to check if username and password exists:
     login(username: string, password: string): Promise<User> {
-        return firstValueFrom(this.http.post<User>(`http://localhost:8080/api/user`, {username, password}))
+        return firstValueFrom(this.http.post<User>(`/api/user`, {username, password}))
             .then(result => {
                 localStorage.setItem("user", JSON.stringify(result))
                 this.username = result.firstname as string
-                console.info("Username in service", this.username)
-                console.info(">>>> username: ", result)
                 this.userSubject.next(result)
                 return result;
         })
@@ -74,7 +72,7 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
     }
 
     getPassword(username: string) {
-        return firstValueFrom(this.http.get(`http://localhost:8080/api/forgotPassword/${username}`))
+        return firstValueFrom(this.http.get(`/api/forgotPassword/${username}`))
     }
 
     register(user: User) {
@@ -82,7 +80,7 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
     }
 
     getUser(username: string): Promise<User> {
-        return firstValueFrom(this.http.get<User>(`http://localhost:8080/api/user/${username}`))
+        return firstValueFrom(this.http.get<User>(`/api/user/${username}`))
     }
 
     updateUser(user: User) {
@@ -93,12 +91,12 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
         content.set("lastname", user.lastname)
         content.set("email", user.email)
         content.set("profileImage", user.profileImage)
-        return firstValueFrom(this.http.put(`http://localhost:8080/api/user/${user.username}/update`, content))
+        return firstValueFrom(this.http.put(`/api/user/${user.username}/update`, content))
     }
 
     // for deleting user
     delete(username: string) {
-        return firstValueFrom(this.http.delete(`http://localhost:8080/api/user/${username}/delete`)
+        return firstValueFrom(this.http.delete(`/api/user/${username}/delete`)
             .pipe(map(result => {
                 // auto logout if user deleted
                 if (username == this.userValue?.username) {
@@ -110,26 +108,26 @@ export class UserService implements CanActivate, CanDeactivate<CanLeave>{
 
     // for getting friends
     getFriends(username: string): Promise<User[]> {
-        return firstValueFrom(this.http.get<User[]>(`http://localhost:8080/api/friends/${username}`))
+        return firstValueFrom(this.http.get<User[]>(`/api/friends/${username}`))
     }
 
     searchFriends(username: string, keyword: string): Promise<User[]> {
-        return firstValueFrom(this.http.get<User[]>(`http://localhost:8080/api/searchFriends/${username}?keyword=${keyword}`))
+        return firstValueFrom(this.http.get<User[]>(`/api/searchFriends/${username}?keyword=${keyword}`))
     }
 
     deleteFriend(username: string, friendName: string) {
-        return firstValueFrom(this.http.delete(`http://localhost:8080/api/deleteFriend/${username}?friendsUsername=${friendName}`))
+        return firstValueFrom(this.http.delete(`/api/deleteFriend/${username}?friendsUsername=${friendName}`))
     }
 
     addFriend(username: string, friendName: string) {
         if (username!=friendName) {
-            return firstValueFrom(this.http.post(`http://localhost:8080/api/addFriends/${username}?friendsUsername=${friendName}`, username))
+            return firstValueFrom(this.http.post(`/api/addFriends/${username}?friendsUsername=${friendName}`, username))
         }
         return null
     }
 
     getNonFriends(username: string): Promise<User[]> {
-        return firstValueFrom(this.http.get<User[]>(`http://localhost:8080/api/nonFriends/${username}`))
+        return firstValueFrom(this.http.get<User[]>(`/api/nonFriends/${username}`))
     }
 
 }

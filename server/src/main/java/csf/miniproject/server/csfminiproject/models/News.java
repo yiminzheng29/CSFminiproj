@@ -149,17 +149,6 @@ public class News {
             DateTimeFormat.forPattern("dd/MM/yyyy")
                     .parseDateTime(rs.getString("publishedAt"))));
         news.setPublishedAt(DateTime.now());
-
-        
-
-        // news.setPublishedAt(new DateTime(rs.getTimestamp("publishedAt").getTime()));
-
-    // DateTime dt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
-    // .parseDateTime(resultSet.getString(1));
-
-        //variant.setDiscoveryDate(
-//    new DateTime(rs.getTimestamp("discovery_dt_tm").getTime())
-//    );
         return news;
     }
 
@@ -177,7 +166,6 @@ public class News {
         String dateTime = jo.getString("publishedAt");
         dateTime = dateTime.replace("Z", "").substring(0, dateTime.length()-5);
         news.setPublishedAt(DateTime.parse(dateTime));
-        // news.setPublishedAt(DateTimeFormat.forPattern("yyyy-mm-dd HH:mm:SS").parseDateTime(dateTime));
         news.setTitle(jo.getString("title"));
         news.setUrl(jo.getString("url"));
         news.setUrlToImage(jo.getString("urlImage"));

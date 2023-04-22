@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.json.Json;
@@ -35,7 +34,6 @@ public class UserRepository {
     private DataSource ds;
 
     // save user details in database
-    @Transactional(rollbackFor = UserException.class)
     public void saveUser(MultipartFile file, String username, String password, String email, String firstname, String lastname, String profileImageUrl) throws Exception{
         try (Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL_CREATE_USER)) {
@@ -51,11 +49,9 @@ public class UserRepository {
 
             }
 
-        // template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword(), user.getFirstname(), user.getLastname(), user.getDob(), user.getEmail(), user.getPhone());
     }
 
     // for authenticating user
-    @Transactional(rollbackFor = UserException.class)
     public Optional<User> authenticate(String payload) {
         StringReader reader = new StringReader(payload);
         JsonReader jr = Json.createReader(reader);
@@ -63,12 +59,6 @@ public class UserRepository {
         
         String username = jo.getString("username");
         String password = jo.getString("password");
-        // final SqlRowSet rs = template.queryForRowSet(SQL_GET_USER, username, password);
-
-        // if (!rs.next())
-        //     return Optional.empty();
-
-        // return Optional.of(User.create(rs));
 
         return template.query(SQL_GET_USER, 
             (ResultSet rs) -> {
@@ -80,15 +70,8 @@ public class UserRepository {
     }
 
     // get user details in the user profile page
-    @Transactional(rollbackFor = UserException.class)
     public Optional<User> getUserDetails(String username) {
         
-        // User user = new User();
-        // SqlRowSet rs = template.queryForRowSet(SQL_SEARCH_USER, username);
-        // if (rs.next()) {
-        //     user = User.create(rs);
-        // }
-        // return user;
         return template.query(SQL_SEARCH_USER, (ResultSet rs) -> {
             if (!rs.next()) {
                 return Optional.empty();
@@ -98,11 +81,6 @@ public class UserRepository {
         }, username);
     }
 
-    // public void updateUser(User user) {
-    //     template.update(SQL_UPDATE_USER, user.getPassword(), user.getFirstname(), 
-    //         user.getLastname(), user.getDob(), user.getEmail(), user.getPhone(), user.getUsername());
-    // }
-    @Transactional(rollbackFor = UserException.class)
     public void updateUser(String username, String password, String firstname, String lastname, String email, MultipartFile file, String profileImageUrl) throws Exception{
         try (Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL_UPDATE_USER)) {
@@ -119,20 +97,17 @@ public class UserRepository {
 
             }
 
-        // template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword(), user.getFirstname(), user.getLastname(), user.getDob(), user.getEmail(), user.getPhone());
     }
 
-    @Transactional(rollbackFor = UserException.class)
     public void deleteUser(String username) {
         template.update(SQL_DELETE_USER, username);
     }
 
-    @Transactional(rollbackFor = UserException.class)
     public void addFriends(String username, String friendsUsername) {
         template.update(SQL_ADD_FRIENDS, username, friendsUsername);
+        template.update(SQL_ADD_FRIENDS, friendsUsername, username);
     }
 
-    @Transactional(rollbackFor = UserException.class)
     public List<User> getFriends(String username) {
         List<String> friends = new LinkedList<>();
         List<User> results = new LinkedList<>();
@@ -143,17 +118,13 @@ public class UserRepository {
 
         for (String f: friends) {
             template.query(SQL_RETRIEVE_FRIEND_RECORD, (ResultSet r) -> {
-                // if (r.next()) {
-                //     System.out.println(r.getString("username"));
-                    
-                // }
+
                 User u = User.create(r);
                 results.add(u);
             }, f);}
         return results;
     }
 
-    @Transactional(rollbackFor = UserException.class)
     public List<User> searchForUsers(String keyword) throws SQLException{
         List<User> results = new LinkedList<>();
         String query = "%".concat(keyword).concat("%");
@@ -165,12 +136,11 @@ public class UserRepository {
         return results;
     }
     
-    @Transactional(rollbackFor = UserException.class)
     public void deleteFriend(String username, String friendsUsername) {
         template.update(SQL_DELETE_FRIEND, username, friendsUsername);
+        template.update(SQL_DELETE_FRIEND, friendsUsername, username);
     }
 
-    @Transactional(rollbackFor = UserException.class)
     public List<User> getNonFriends(String username) throws SQLException{
         List<String> friends = new LinkedList<>();
         List<User> results = new LinkedList<>();

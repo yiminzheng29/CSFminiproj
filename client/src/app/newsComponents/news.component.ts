@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { comments, News, User } from '../models';
+import { News, User } from '../models';
 import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -26,7 +26,6 @@ import { FirebaseService } from '../firebase.service';
 export class NewsComponent implements OnInit, OnDestroy{
 
   allNews: News[] = []
-  allComments: comments[] = []
   userSub$!: Subscription
   username!: string
   selectedNews!: News
@@ -35,7 +34,6 @@ export class NewsComponent implements OnInit, OnDestroy{
   shareNews!: FormGroup
   recipient!: string
   folded = 'closed'
-  postComment!: comments
   newsId!: string
   liked = false
   message: any
@@ -59,20 +57,14 @@ export class NewsComponent implements OnInit, OnDestroy{
       })
       this.newsSvc.getAllNews("us", this.username)
         .then((result) => {
-          console.info("news: ", result)
           this.allNews = result
           result.forEach(x => {
             this.allResponses.push(x.newsId as string)
           })
-          // console.info(this.allResponses)
         
         })
         .catch(error => {
-          console.error("error: ", error)
         })
-        // console.info(this.allResponses)
-    // this.showComments()
-    // this.firebaseSvc.requestPermission(this.username)
     this.message = this.firebaseSvc.listen()
     this.searchForm = this.createForm()
     this.getFriends()
@@ -81,7 +73,6 @@ export class NewsComponent implements OnInit, OnDestroy{
 
   submitQuery() {
     this.searchQuery = this.searchForm.value['searchQuery'] as string
-    console.info(this.searchQuery)
     this.router.navigate(['/search/',this.searchQuery])
   }
 
@@ -106,17 +97,13 @@ export class NewsComponent implements OnInit, OnDestroy{
       this.username = value?.username as string
     })
     this.selectedNews = this.allNews[i] as News
-    console.info("username: ", this.username)
-    console.info("news: ", this.selectedNews)
     if (this.selectedNews.newsId?.length == 6) {
       console.info("unliking post", this.allNews[i].newsId)
       this.newsSvc.unlikeNews(this.allNews[i].newsId as string, this.username)
-      // this.allNews[i].liked=false
       this.ngOnInit() // refreshes the browser
     }
     else {
       this.allNews[i] = await this.newsSvc.likeNews(this.allNews[i], this.username)
-      // this.allNews[i].liked=true
     }
   }
 
@@ -128,40 +115,6 @@ export class NewsComponent implements OnInit, OnDestroy{
       })
     
   }
-
-  // async submitComment(i: number) {
-  //   this.allNews[i] = await this.newsSvc.saveNews(this.allNews[i], this.username)
-  //   this.newsId = this.allNews[i].newsId as string
-  //   this.postComment = this.commentField.value as comments
-
-  //   this.postComment = await this.commentSvc.postComment(this.postComment, this.newsId)
-  //   this.allComments.push(this.postComment)
-  //   this.commentField.reset() // reset the inputs
-  //   this.ngOnInit() // refreshes the browser
-  // }
-
-  // async showComments() {
-  //   this.allComments = await this.commentSvc.getAllComments()
-
-  //   for (let i = 0; i < this.allNews.length; i ++) {
-  //     this.allNews[i].comments = this.allComments
-  //     this.allNews[i].comments?.filter(c => {
-  //       c.newsId = this.allNews[i].newsId
-  //     })
-  //   }
-  // }
-
-  // share(i: number): void {
-  //   this.selectedNews = this.allNews[i] as News
-  //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-  //   console.info(this.shareNews.value['recipient'])
-  //   this.recipient = this.shareNews.value['recipient'] as string
-  //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-  //     this.recipient, this.selectedNews.urlImage)
-  //   this.shareNews.reset()
-  //   this.ngOnInit()
-  //   this.folded='closed'
-  // }
 
   share(recipient: string, i: number): void {
     this.selectedNews = this.allNews[i] as News
@@ -180,13 +133,3 @@ export class NewsComponent implements OnInit, OnDestroy{
   
   
 }
-
-// .then(
-//   (result) => {result.forEach(x => {
-//     if (x.newsId == this.allNews[i].newsId) {
-//       this.allComments.push(x as comments)
-//     }
-//   })
-    
-//   }
-// )

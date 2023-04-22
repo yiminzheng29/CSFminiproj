@@ -34,15 +34,6 @@ export class HomeComponent implements OnInit{
     return this.form.valid;
   }
 
-  // async login() {
-  //   const val = this.form.value;
-  //   this.user = await this.userSvc.login(val.username, val.password)
-  //   if (this.userSvc.canLogin == true)
-  //   console.log("User has logged in")
-  //   this.router.navigate(['/news'])
-
-  //   }
-
     async onSubmit() {
       this.submitted = true
 
@@ -53,7 +44,6 @@ export class HomeComponent implements OnInit{
 
       this.loading = true
       this.user = await this.userSvc.login(this.form.value.username, this.form.value.password)
-      console.info("home user: ", this.user)
       this.router.navigate(['/topNews'])
     }
 }

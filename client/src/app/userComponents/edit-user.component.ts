@@ -52,14 +52,11 @@ export class EditUserComponent implements OnInit, OnDestroy {
   editUser() {
     const user = this.editForm.value as User
     user.profileImage = this.image.nativeElement.files[0]
-    console.info(user)
     this.userSvc.updateUser(user)
-    console.info("User updated", this.editForm.value as User)
     this.router.navigate(['/news'])
   }
 
   deleteUser() {
-    console.info("delete", this.username)
     this.userSvc.delete(this.username as string)
   }
 
@@ -69,10 +66,8 @@ export class EditUserComponent implements OnInit, OnDestroy {
       password: this.fb.control('', [Validators.required, Validators.minLength(4)]),
       firstname: this.fb.control('', [Validators.required]), 
       lastname: this.fb.control('', [Validators.required]), 
-      // dob: this.fb.control('', [Validators.required]),
       email: this.fb.control('', [Validators.required, Validators.email]),
       profileImage: this.fb.control('', [Validators.required])
-      // phone: this.fb.control('', [Validators.required])
     })
   }
 

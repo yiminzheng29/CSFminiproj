@@ -38,7 +38,6 @@ body {
 .card-icons {
   margin-top: auto;
   display: flex;
-  /* justify-content: flex-end; */
   margin-bottom: 10px;
   align-items: center;
   justify-content: center;

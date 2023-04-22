@@ -20,15 +20,12 @@ public class User {
     private String email;
     private byte[] profileImage;
     private String profileImageUrl;
-    // private String phone;
-    // private Date dob;
 
     public String getUsername() {return username;}
     public void setUsername(String username) {this.username = username;}
 
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
-
     
     public String getFirstname() {return firstname;}
     public void setFirstname(String firstname) {this.firstname = firstname;}
@@ -45,23 +42,14 @@ public class User {
     public String getProfileImageUrl() {return profileImageUrl;}
     public void setProfileImageUrl(String profileImageUrl) {this.profileImageUrl = profileImageUrl;}
 
-
-    // public String getPhone() {return phone;}
-    // public void setPhone(String phone) {this.phone = phone;}
-
-    // public Date getDob() {return dob;}
-    // public void setDob(Date dob) {this.dob = dob;}
-
     public JsonObject toJson() {
         return Json.createObjectBuilder()
             .add("username", username)
             .add("password", password)
             .add("firstname", firstname)
             .add("lastname", lastname)
-            // .add("dob", dob.toString())
             .add("email", email)
             .add("profileImage", profileImageUrl)
-            // .add("phone", phone)
             .build();
     }
 
@@ -71,15 +59,8 @@ public class User {
         user.setPassword(jo.getString("password"));
         user.setFirstname(jo.getString("firstname"));
         user.setLastname(jo.getString("lastname"));
-        // retrieve DOB as string and parse as date
-        // String dateOfBirth = jo.getString("dob");
-        // System.out.println(dateOfBirth);
-        // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        // Date dob = sdf.parse(dateOfBirth); 
-        // user.setDob(dob);
         user.setEmail(jo.getString("email"));
         user.setProfileImageUrl(jo.getString("profileImage"));
-        // user.setPhone(jo.getString("phone"));
 
         return user;
     }
@@ -90,11 +71,9 @@ public class User {
         user.setPassword(rs.getString("password"));
         user.setFirstname(rs.getString("firstname"));
         user.setLastname(rs.getString("lastname"));
-        // user.setDob(rs.getDate("dob"));
         user.setEmail(rs.getString("email"));
         user.setProfileImage(rs.getBytes("profileImage"));
         user.setProfileImageUrl(rs.getString("profileImageUrl"));
-        // user.setPhone(rs.getString("phone"));
         
 
         return user;
@@ -106,10 +85,8 @@ public class User {
         user.setPassword(rs.getString("password"));
         user.setFirstname(rs.getString("firstname"));
         user.setLastname(rs.getString("lastname"));
-        // user.setDob(rs.getDate("dob"));
         user.setEmail(rs.getString("email"));
         user.setProfileImageUrl(rs.getString("profileImageUrl"));
-        // user.setPhone(rs.getString("phone"));
         
 
         return user;

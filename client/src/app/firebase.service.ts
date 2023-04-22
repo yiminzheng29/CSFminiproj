@@ -19,7 +19,6 @@ export class FirebaseService {
         { vapidKey: environment.firebase.vapidKey}).then(
         (currentToken) => {
             if (currentToken) {
-            console.log(username, currentToken);
             this.saveToken(username, currentToken)
             } else {
             console.log('No registration token available. Request permission to generate one.');
@@ -35,7 +34,6 @@ export class FirebaseService {
     listen(): string {
         const messaging = getMessaging();
         onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
         this.message=payload;
         
         });
@@ -46,7 +44,7 @@ export class FirebaseService {
         const params = new HttpParams()
             .set("username", username)
             .set("token", token)
-        return firstValueFrom(this.http.post('http://localhost:8080/api/saveToken', params))
+        return firstValueFrom(this.http.post('/api/saveToken', params))
         
     }
 
@@ -57,9 +55,8 @@ export class FirebaseService {
         content.set("sender", sender)
         content.set("recipient", recipient)
         content.set("urlImage", urlImage)
-        console.info(content)
 
-        return firstValueFrom(this.http.post('http://localhost:8080/api/news/sendNews', content))
+        return firstValueFrom(this.http.post('/api/news/sendNews', content))
     }
 
     public addFriendNotification(message: string, sender: string, recipient: string) {
@@ -67,8 +64,8 @@ export class FirebaseService {
         content.set("message", message)
         content.set("sender", sender)
         content.set("recipient", recipient)
-        console.info(content)
-        return firstValueFrom(this.http.post('http://localhost:8080/api/addAFriend', content))
+
+        return firstValueFrom(this.http.post('/api/addAFriend', content))
     }
 
 }

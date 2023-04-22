@@ -42,19 +42,18 @@ export class FriendsComponent implements OnInit, OnDestroy{
 
   async getAllFriends() {
     this.friends = await this.userSvc.getFriends(this.username)
-    console.info(this.friends)
   }
 
   deleteFriend(friendUsername: string) {
     this.userSvc.deleteFriend(this.username, friendUsername)
     const message = "You have been removed as a friend by " + this.username
     this.fbSvc.addFriendNotification(message, this.username, friendUsername)
+    this.router.navigate(['/friends', this.username])
     this.ngOnInit()
   }
 
   async getNonFriends () {
     this.nonFriends = await this.userSvc.getNonFriends(this.username)
-    console.info(this.nonFriends)
   }
 
   addFriend(friendUsername: string) {

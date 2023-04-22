@@ -45,7 +45,6 @@ export class BusinessNewsComponent {
   ngOnInit(): void {
       this.params$ = this.activatedRoute.params.subscribe((params) => {
         this.searchQuery = params['searchQuery']
-        console.info(this.searchQuery)
       })
         //to validate login
       if (localStorage.getItem("user") == null) {
@@ -58,7 +57,6 @@ export class BusinessNewsComponent {
       .then(
         (ans) => {
           this.results = ans
-          console.info(this.results)
         }
         
       )
@@ -75,7 +73,6 @@ export class BusinessNewsComponent {
   
     submitQuery() {
       this.searchQuery = this.searchForm.value['searchQuery'] as string
-      console.info(this.searchQuery)
       this.router.navigate(['/search/',this.searchQuery])
     }
   
@@ -91,17 +88,14 @@ export class BusinessNewsComponent {
         this.username = value?.username as string
       })
       this.selectedNews = this.results[i] as News
-      console.info("username: ", this.username)
-      console.info("news: ", this.selectedNews)
+
       if (this.selectedNews.newsId?.length == 6) {
         console.info("unliking post", this.results[i].newsId)
         this.newsSvc.unlikeNews(this.results[i].newsId as string, this.username)
-        // this.allNews[i].liked=false
         this.ngOnInit() // refreshes the browser
       }
       else {
         this.results[i] = await this.newsSvc.likeNews(this.results[i], this.username)
-        // this.allNews[i].liked=true
         console.info("liking post", this.results[i].newsId)
       }
     }
@@ -115,18 +109,6 @@ export class BusinessNewsComponent {
       
     }
 
-    // share(i: number): void {
-    //   this.selectedNews = this.results[i] as News
-    //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-    //   console.info(this.shareNews.value['recipient'])
-    //   this.recipient = this.shareNews.value['recipient'] as string
-    //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-    //     this.recipient, this.selectedNews.urlImage)
-    //   this.shareNews.reset()
-    //   this.ngOnInit()
-    //   this.folded='closed'
-  
-    // }
     share(recipient: string, i: number): void {
       this.selectedNews = this.results[i] as News
       this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 

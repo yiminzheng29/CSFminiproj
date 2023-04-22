@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'WhatsNew',
+  appId: 'com.whatsnew.yimin',
+  appName: 'whatsNew',
   webDir: 'dist/client',
   bundledWebRuntime: false
 };

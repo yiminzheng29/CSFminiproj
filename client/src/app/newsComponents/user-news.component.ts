@@ -43,11 +43,6 @@ export class UserNewsComponent implements OnInit{
   constructor(private newsSvc: NewsService, private activatedRoute: ActivatedRoute, 
     private router: Router, private userSvc: UserService, private fb: FormBuilder, private firebaseSvc: FirebaseService) {}
 
-  // toggleGridColumns() {
-   
-  //   this.gridColumns = this.gridColumns === 3 ? 4 : 3;
-  // }
-
   ngOnInit(): void {
     // to validate login
     if (localStorage.getItem("user") == null) {
@@ -77,13 +72,10 @@ export class UserNewsComponent implements OnInit{
 
   async getAllNewsByUser() {
     this.allNewsByUser = await this.newsSvc.getAllNewsByUsername(this.username)
-    console.info(this.allNewsByUser)
   }
 
   async likeNews(i: number) {
-    console.info("username: ", this.username)
     if (this.allNewsByUser[i].newsId?.length == 6) {
-      console.info("unliking post", this.allNewsByUser[i].newsId)
       this.newsSvc.unlikeNews(this.allNewsByUser[i].newsId as string, this.username)
       this.allNewsByUser.splice(i,1)
       console.info(this.allNewsByUser) // refreshes the browser
@@ -103,18 +95,6 @@ export class UserNewsComponent implements OnInit{
     
   }
 
-  // share(i: number): void {
-  //   this.selectedNews = this.allNewsByUser[i] as News
-  //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-  //   console.info(this.shareNews.value['recipient'])
-  //   this.recipient = this.shareNews.value['recipient'] as string
-  //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-  //     this.recipient, this.selectedNews.urlImage)
-  //   this.shareNews.reset()
-  //   this.ngOnInit()
-  //   this.folded='closed'
-
-  // }
   share(recipient: string, i: number): void {
     this.selectedNews = this.allNewsByUser[i] as News
     this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
