@@ -66,7 +66,7 @@ public class GmailService {
     public void sendMail(User user) throws Exception {
         String message = """
                 Dear %s,\n\nThank you for registering with What's New!\n\nYour username is: %s.\n
-                Please login to 'http://www.whatsnew.com to start browsing the latest news.\n\n
+                Please login to https://whatsnew-production.up.railway.app/#/ to start browsing the latest news.\n\n
                 Thank you and have a great day ahead! \n\n xoxo What's New\n
                 psst Want to find a news the quick way? Start messaging us on telegram @this_newsapp_bot
                 """.formatted(user.getFirstname(), user.getUsername());
@@ -103,7 +103,7 @@ public class GmailService {
     public void sendUpdateMail(User user) throws Exception {
         String message = """
                 Dear %s,\n\nCongratulations, your details have been successfully updated.\n
-                Please login to 'http://www.whatsnew.com to start browsing the latest news.\n\n
+                Please login to https://whatsnew-production.up.railway.app/#/ to start browsing the latest news.\n\n
                 Thank you and have a great day ahead! \n\n xoxo What's New\n
                 psst Want to find a news the quick way? Start messaging us on telegram @this_newsapp_bot
                 """.formatted(user.getFirstname());
@@ -140,7 +140,7 @@ public class GmailService {
     public void sendDeleteMail(User user) throws Exception {
         String message = """
                 Dear %s,\n\nWe are sad to see you leave.\n
-                Please come back to 'http://www.whatsnew.com anytime.\n\n
+                Please come back to https://whatsnew-production.up.railway.app/#/ anytime.\n\n
                 Thank you and have a great day ahead! \n\n xoxo What's New\n
                 psst Want to find a news the quick way? Start messaging us on telegram @this_newsapp_bot
                 """.formatted(user.getFirstname());
