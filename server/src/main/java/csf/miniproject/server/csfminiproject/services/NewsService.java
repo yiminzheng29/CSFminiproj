@@ -2,6 +2,7 @@ package csf.miniproject.server.csfminiproject.services;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -69,18 +70,21 @@ public class NewsService {
 
     public List<News> searchNews(String query, String username) {
         String payload = "";
-        String url = UriComponentsBuilder.fromUriString(SEARCH_NEWS)
-            .queryParam("q", query)
-            .queryParam("apiKey", key)
-            .toUriString();
-
-        // URI uri = new URI(URL.concat("?country=%s&apiKey=%s".format(country, key)));
-        RequestEntity<Void> req = RequestEntity.get(url).build();
-
-        RestTemplate template = new RestTemplate();
         ResponseEntity<String> resp;
-
+        
         try {
+            String url = UriComponentsBuilder.fromUriString(SEARCH_NEWS)
+                .queryParam("q", URLEncoder.encode(query, "UTF-8"))
+                .queryParam("apiKey", key)
+                .toUriString();
+
+            // URI uri = new URI(URL.concat("?country=%s&apiKey=%s".format(country, key)));
+            RequestEntity<Void> req = RequestEntity.get(url).build();
+
+            RestTemplate template = new RestTemplate();
+            
+
+        
             resp = template.exchange(req, String.class);
         } catch (Exception ex) {
             System.err.printf("Error: %s\n", ex.getMessage());

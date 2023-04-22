@@ -2,13 +2,11 @@ package csf.miniproject.server.csfminiproject.models;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.sql.ResultSet;
 
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import com.mysql.cj.protocol.Resultset;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;

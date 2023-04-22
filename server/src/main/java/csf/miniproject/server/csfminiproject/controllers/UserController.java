@@ -1,12 +1,10 @@
 package csf.miniproject.server.csfminiproject.controllers;
 
-import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +22,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.api.services.gmail.Gmail.Users;
-import com.google.protobuf.Method;
-
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
 import csf.miniproject.server.csfminiproject.models.News;
 import csf.miniproject.server.csfminiproject.models.User;
 import csf.miniproject.server.csfminiproject.services.GmailService;
