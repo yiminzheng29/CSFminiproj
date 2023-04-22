@@ -1,6 +1,6 @@
 
 <body>
-  <h4 class="back-nav" [routerLink]="['/search']"><< Back to search</h4>
+  <h4 class="back-nav" [routerLink]="['/news']"><< Back to search</h4>
 
 
   <mat-card appearance="outlined" class="example-card" *ngFor="let article of results; let i = index">
@@ -44,13 +44,21 @@
       </mat-card-actions>
       
       <div [@panelState]="folded" *ngIf="article.toggle=='open'">
-      <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
+      <!-- <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
         <mat-form-field>
           <input matInput type="text" formControlName="recipient" class="full-width">
         </mat-form-field>
         <button mat-button type="submit" [disabled]="!this.shareNews.valid">Submit</button>
-        
-      </form>
+      </form> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Share news with...</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let f of this.friends" [value]="f.firstname" (click)="share(f.username, i)">
+            {{f.firstname}} (<span>@{{f.username}}</span>)
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
     </div>
   </mat-card>
 </body>

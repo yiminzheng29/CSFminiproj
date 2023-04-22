@@ -1,6 +1,19 @@
+<ngb-carousel class="slider">
+  <ng-template ngbSlide *ngFor="let a of results; let i = index">
+    <div class="picsum-img-wrapper" align="center">
+      <img [src]="a.urlImage" width="1060px" height="400px"/>
+    </div>
+    <div class="carousel-caption">
+      <h1><b><SPAN STYLE="text-shadow: 0.15em 0.15em #2F4F4F">{{ a.title }}</SPAN></b></h1>
+      <p>{{ a.description }}</p>
+      <h3><b>{{ a.likes }}</b> likes</h3>
+    </div>
 
+  </ng-template>
+</ngb-carousel>
 <body>
   <div class="top-buttons" align="center" mat-button-spacing="10px">
+    <button mat-raised-button [routerLink]="['/topNews']">Top Headlines</button>
     <button mat-raised-button [routerLink]="['/news']">General</button>
     <button mat-raised-button [routerLink]="['/news/entertainment']" >Entertainment</button>
     <button mat-raised-button [routerLink]="['/news/business']">Business</button>
@@ -57,13 +70,21 @@
       </mat-card-actions>
       
       <div [@panelState]="folded" *ngIf="article.toggle=='open'">
-      <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
+        <mat-form-field appearance="fill">
+          <mat-label>Share news with...</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let f of this.friends" [value]="f.firstname" (click)="share(f.username, i)">
+              {{f.firstname}} (<span>@{{f.username}}</span>)
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      <!-- <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
         <mat-form-field>
           <input matInput type="text" formControlName="recipient" class="full-width">
         </mat-form-field>
         <button mat-button type="submit" [disabled]="!this.shareNews.valid">Submit</button>
         
-      </form>
+      </form> -->
     </div>
   </mat-card>
 </body>

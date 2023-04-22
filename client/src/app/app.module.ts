@@ -32,6 +32,10 @@ import { SportsNewsComponent } from './newsComponents/sports-news.component';
 import { TechnologyNewsComponent } from './newsComponents/technology-news.component';
 import { BusinessNewsComponent } from './newsComponents/business-news.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TopHeadlinesComponent } from './newsComponents/top-headlines.component';
+import { FriendsComponent } from './userComponents/friends.component';
+import { SearchFriendsComponent } from './userComponents/search-friends.component';
 initializeApp(environment.firebase);
 
 const routes: Routes = [
@@ -41,6 +45,7 @@ const routes: Routes = [
   // {path:'update/:issueNo', component: IssueDetailsComponent},
   {path:'register', component: RegisterComponent},
   {path:'news', component: NewsComponent},
+  {path:'topNews', component: TopHeadlinesComponent},
   {path:'news/entertainment', component: EntertainmentNewsComponent},
   {path:'news/sports', component: SportsNewsComponent},
   {path:'news/business', component: BusinessNewsComponent},
@@ -48,6 +53,8 @@ const routes: Routes = [
   {path:'search/:searchQuery', component: NewsResultsComponent},
   {path:'savedNews/:username', component: UserNewsComponent},
   {path:'users/:username', component: EditUserComponent},
+  {path:'friends/:username', component: FriendsComponent},
+  {path:'searchFriends/:keyword', component: SearchFriendsComponent},
   {path:'**', redirectTo: "/", pathMatch: "full"},
   
 ];
@@ -66,7 +73,10 @@ const routes: Routes = [
     SportsNewsComponent,
     TechnologyNewsComponent,
     BusinessNewsComponent,
-  ],
+    FriendsComponent,
+    SearchFriendsComponent,
+    TopHeadlinesComponent
+],
   imports: [
     BrowserModule,
     BrowserAnimationsModule, 
@@ -78,6 +88,7 @@ const routes: Routes = [
     MatInputModule,
     FlexLayoutModule,
     LoadingBarRouterModule,
+    NgbModule,
     RouterModule.forRoot( routes, {useHash: true}),
     // AngularFireDatabaseModule,
     // AngularFireStorageModule,

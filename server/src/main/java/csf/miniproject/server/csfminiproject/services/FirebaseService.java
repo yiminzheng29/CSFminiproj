@@ -44,6 +44,23 @@ public class FirebaseService {
         return firebaseMessaging.send(message);
     }
 
+    public String addFriendNotification(FirebaseNotification notification) throws FirebaseMessagingException {
+       
+        Message message = Message.builder()
+                        .setWebpushConfig(
+                                WebpushConfig.builder()
+                                        .setNotification(
+                                                WebpushNotification.builder()
+                                                        .setTitle(notification.getTitle())
+                                                        .setBody(notification.getMessage())
+                                                        .build()
+                                        ).build()
+                        )
+                        .setToken(notification.getTarget())
+                        .build();
+        return firebaseMessaging.send(message);
+    }
+
     public void insertToken(String token, String username){
         firebaseRepo.insertToken(username, token);
     }

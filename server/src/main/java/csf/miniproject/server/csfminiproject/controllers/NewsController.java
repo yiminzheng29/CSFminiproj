@@ -40,15 +40,16 @@ public class NewsController {
         return ResponseEntity.ok(jArr.build().toString());
     }
 
-    @GetMapping(path="/topHeadlines")
+    @GetMapping(path="/topHeadlines/{limit}")
     @ResponseBody
-    public ResponseEntity<String> getTopHeadlines(@RequestParam Integer limit) {
-        List<News> results = newsSvc.selectTopHeadlines(limit);
+    public ResponseEntity<String> getTopHeadlines(@PathVariable Integer limit, @RequestParam String username) {
+        List<News> results = newsSvc.selectTopHeadlines(limit, username);
 
         // for converting news to json
         JsonArrayBuilder jArr = Json.createArrayBuilder();
         results.stream().forEach(x -> 
                     jArr.add(x.toJson()));
+
 
         return ResponseEntity.ok(jArr.build().toString());
     }

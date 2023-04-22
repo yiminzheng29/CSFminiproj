@@ -73,4 +73,12 @@ export class NewsService {
             this.http.get<News[]>(`http://localhost:8080/api/news/${searchQuery}/results`, {params})
         )
     }
+
+    public getTopHeadlines(limit: number, username: string): Promise<News[]> {
+        const params = new HttpParams()
+            .set("username", username)
+            return firstValueFrom(
+                this.http.get<News[]>(`http://localhost:8080/api/topHeadlines/${limit}`, {params})
+            )
+        }
 }

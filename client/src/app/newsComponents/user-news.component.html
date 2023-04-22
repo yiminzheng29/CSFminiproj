@@ -49,13 +49,21 @@
 
             </div>
             <div [@panelState]="folded" *ngIf="article.toggle=='open'">
-              <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
+              <mat-form-field appearance="fill">
+                <mat-label>Share news with...</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let f of this.friends" [value]="f.firstname" (click)="share(f.username, i)">
+                    {{f.firstname}} (<span>@{{f.username}}</span>)
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- <form [formGroup]="shareNews" (ngSubmit)="share(i)"> 
                 <mat-form-field>
                   <input matInput type="text" formControlName="recipient" class="full-width">
                 </mat-form-field>
                 <button mat-button type="submit" [disabled]="!this.shareNews.valid">Submit</button>
                 
-              </form>
+              </form> -->
             </div>
           </mat-card>
           

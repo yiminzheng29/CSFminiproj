@@ -2,11 +2,10 @@ import { Component, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { comments, News } from '../models';
+import { comments, News, User } from '../models';
 import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { CommentService } from '../comments.service';
 import { FirebaseService } from '../firebase.service';
 
 @Component({
@@ -42,6 +41,9 @@ export class NewsComponent implements OnInit, OnDestroy{
   message: any
   searchQuery!: string
   searchForm!: FormGroup
+  friends!: User[]
+  friendsList: string[] = []
+
   
   constructor(private fb: FormBuilder, private newsSvc: NewsService, private userSvc: UserService, private router: Router,
  private firebaseSvc: FirebaseService) {}
@@ -70,16 +72,25 @@ export class NewsComponent implements OnInit, OnDestroy{
         })
         // console.info(this.allResponses)
     // this.showComments()
-    console.info(this.allComments)
     // this.firebaseSvc.requestPermission(this.username)
     this.message = this.firebaseSvc.listen()
     this.searchForm = this.createForm()
+    this.getFriends()
+    
   }
 
   submitQuery() {
     this.searchQuery = this.searchForm.value['searchQuery'] as string
     console.info(this.searchQuery)
     this.router.navigate(['/search/',this.searchQuery])
+  }
+
+  async getFriends() {
+    this.friends = await this.userSvc.getFriends(this.username)
+    this.friends.forEach(x => {
+      this.friendsList.push(x.username)
+    })
+   
   }
 
   createForm() {
@@ -106,8 +117,6 @@ export class NewsComponent implements OnInit, OnDestroy{
     else {
       this.allNews[i] = await this.newsSvc.likeNews(this.allNews[i], this.username)
       // this.allNews[i].liked=true
-      console.info(this.allNews)
-      console.info("liking post", this.allNews[i].newsId)
     }
   }
 
@@ -142,17 +151,25 @@ export class NewsComponent implements OnInit, OnDestroy{
   //   }
   // }
 
-  share(i: number): void {
+  // share(i: number): void {
+  //   this.selectedNews = this.allNews[i] as News
+  //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
+  //   console.info(this.shareNews.value['recipient'])
+  //   this.recipient = this.shareNews.value['recipient'] as string
+  //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+  //     this.recipient, this.selectedNews.urlImage)
+  //   this.shareNews.reset()
+  //   this.ngOnInit()
+  //   this.folded='closed'
+  // }
+
+  share(recipient: string, i: number): void {
     this.selectedNews = this.allNews[i] as News
-    // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-    console.info(this.shareNews.value['recipient'])
-    this.recipient = this.shareNews.value['recipient'] as string
-    this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-      this.recipient, this.selectedNews.urlImage)
+    this.firebaseSvc.shareNews(this.selectedNews.title, this.username, 
+      recipient, this.selectedNews.url)
     this.shareNews.reset()
     this.ngOnInit()
     this.folded='closed'
-
   }
 
   ngOnDestroy(): void {

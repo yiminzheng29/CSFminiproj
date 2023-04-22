@@ -1,7 +1,9 @@
 package csf.miniproject.server.csfminiproject.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.PropertyMapper.Source;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +18,10 @@ import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -118,5 +123,71 @@ public class UserRepository {
         template.update(SQL_DELETE_USER, username);
     }
 
+    public void addFriends(String username, String friendsUsername) {
+        template.update(SQL_ADD_FRIENDS, username, friendsUsername);
+    }
+
+    public List<User> getFriends(String username) {
+        List<String> friends = new LinkedList<>();
+        List<User> results = new LinkedList<>();
+
+        SqlRowSet rs = template.queryForRowSet(SQL_GET_FRIENDS, username);
+        while (rs.next()) 
+            friends.add(rs.getString("friends_username"));
+
+        for (String f: friends) {
+            template.query(SQL_RETRIEVE_FRIEND_RECORD, (ResultSet r) -> {
+                // if (r.next()) {
+                //     System.out.println(r.getString("username"));
+                    
+                // }
+                User u = User.create(r);
+                results.add(u);
+            }, f);}
+        return results;
+    }
+
+    public List<User> searchForUsers(String keyword) throws SQLException{
+        List<User> results = new LinkedList<>();
+        String query = "%".concat(keyword).concat("%");
+
+        SqlRowSet rs = template.queryForRowSet(SQL_GET_LIST_OF_USERS, query);
+        while (rs.next()) 
+            results.add(User.rowSetCreate(rs));
+
+        return results;
+    }
     
+    public void deleteFriend(String username, String friendsUsername) {
+        template.update(SQL_DELETE_FRIEND, username, friendsUsername);
+    }
+
+    public List<User> getNonFriends(String username) throws SQLException{
+        List<String> friends = new LinkedList<>();
+        List<User> results = new LinkedList<>();
+        List<String> allUsers = new LinkedList<>();
+
+        SqlRowSet rs = template.queryForRowSet(SQL_GET_FRIENDS, username);
+        while (rs.next()) 
+            friends.add(rs.getString("friends_username"));
+
+        SqlRowSet rs1 = template.queryForRowSet(SQL_GET_ALL_USERS);
+            while (rs1.next()) 
+                allUsers.add(rs1.getString("username"));
+
+        allUsers.removeAll(friends);
+        allUsers.remove(username);
+        Integer limit = Integer.min(10, allUsers.size());
+        allUsers = allUsers.subList(0, limit);
+
+        for (String f: allUsers) {
+            template.query(SQL_RETRIEVE_FRIEND_RECORD, (ResultSet r) -> {
+
+                User u = User.create(r);
+                results.add(u);
+            }, f);}
+
+        
+        return results;
+    }
 }

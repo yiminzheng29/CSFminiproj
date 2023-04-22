@@ -20,38 +20,6 @@ public class NewsRepository {
     
     @Autowired
     private JdbcTemplate template;
-    
-    // public List<News> getLikes(List<News> news, String username) {
-    //     for (News article: news) {
-    //         SqlRowSet result = template.queryForRowSet(SQL_CHECK_IF_NEWS_EXIST, article.getTitle());
-    //         if (result.next()) {
-    //             String newsId = result.getString("newsId");
-    //             article.setNewsId(newsId);
-    
-    //             SqlRowSet likesResult  = template.queryForRowSet(SQL_GET_LIKES, newsId);
-    //             // likes += likesResult.getInt("likes");
-    //             if (likesResult.next()) {
-    //                 Integer likes = likesResult.getInt("likes");
-    //                 article.setLikes(likes);
-    //             }
-    //         }
-    //         SqlRowSet rs = template.queryForRowSet(SQL_CHECK_POSTS_LIKED_BY_USER, username);
-            
-    //         List<String> likedPosts = new LinkedList<>();
-    //         while (rs.next()) {
-    //             likedPosts.add(rs.getString("newsId"));
-    //         };
-    //         for (String id: likedPosts) {
-    //             if (id.equals(article.getNewsId())) {
-    //                 article.setNewsId(id);
-    //                 System.out.println(id + article.getNewsId());
-    //             }
-                
-    //         }
-
-    //     }
-    //     return news;
-    // }
 
     public List<News> getLikes(List<News> news, String username) {
         
@@ -214,20 +182,30 @@ public class NewsRepository {
         return newsByUser;
     }
 
-    public List<News> selectTopHeadlines(Integer limit) {
+    public List<News> selectTopHeadlines(Integer limit, String username) {
         List<News> results = new LinkedList<>();
         List<String> newsId = new LinkedList<>();
+        List<String> postsLiked = new LinkedList<>();
         SqlRowSet rs = template.queryForRowSet(SQL_GET_TOP_NEWS, limit);
         while (rs.next()) {
             newsId.add(rs.getString("newsId"));
+        }
+
+        // check posts liked by user
+        SqlRowSet rs1 = template.queryForRowSet(SQL_CHECK_POSTS_LIKED_BY_USER, username);
+        while (rs1.next()) {
+            postsLiked.add(rs1.getString("newsId"));
         }
 
         for (String id: newsId) {
             SqlRowSet result = template.queryForRowSet(SQL_GET_USER_NEWS, id);
             if (result.next()) {
                 News news = News.create(result);
-                news.setLiked(true);
-
+                if (postsLiked.contains(news.getNewsId())) {
+                    news.setLiked(true);
+                }
+                    
+                
                 SqlRowSet likes = template.queryForRowSet(SQL_GET_LIKES, id);
                 if (likes.next()) {
                     news.setLikes(likes.getInt("likes"));

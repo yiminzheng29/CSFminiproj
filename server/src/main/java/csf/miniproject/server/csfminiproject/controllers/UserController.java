@@ -1,6 +1,7 @@
 package csf.miniproject.server.csfminiproject.controllers;
 
 import java.io.StringReader;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -23,18 +24,16 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.api.services.gmail.Gmail.Users;
 import com.google.protobuf.Method;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-// import csf.miniproject.server.csfminiproject.models.Comment;
 import csf.miniproject.server.csfminiproject.models.News;
 import csf.miniproject.server.csfminiproject.models.User;
 import csf.miniproject.server.csfminiproject.services.GmailService;
-// import csf.miniproject.server.csfminiproject.services.CommentService;
-// import sg.edu.nus.pafworkshop21.workshop21.services.MailService;
 import csf.miniproject.server.csfminiproject.services.NewsService;
 import csf.miniproject.server.csfminiproject.services.S3Service;
 import csf.miniproject.server.csfminiproject.services.UserService;
@@ -50,9 +49,6 @@ public class UserController {
     @Autowired
     private NewsService newsSvc;
 
-    // @Autowired
-    // private CommentService cSvc;
-
     @Autowired
     private S3Service s3Svc;
 
@@ -64,8 +60,6 @@ public class UserController {
     @ResponseBody
     public void createUser(@RequestPart MultipartFile profileImage, @RequestPart String username, @RequestPart String password,
         @RequestPart String firstname, @RequestPart String lastname, @RequestPart String email) throws Exception{
-        // JsonReader jr = Json.createReader(new StringReader(payload));
-        // JsonObject jo = jr.readObject();
 
         User user = new User();
         user.setUsername(username);
@@ -81,24 +75,10 @@ public class UserController {
         
     }
 
-    // public ResponseEntity<String> createUser(@RequestBody String payload) throws Exception{
-    //     System.out.println(payload);
-        
-    //     JsonReader jr = Json.createReader(new StringReader(payload));
-    //     JsonObject jo = jr.readObject();
-
-    //     User user = User.create(jo);
-
-    //     userSvc.saveUser(user);
-
-    //     return ResponseEntity.ok().body(jo.toString());
-    // }
-
     @PostMapping(path="/user")
     @ResponseBody
     public ResponseEntity<User> login(@RequestBody String payload){
 
-        System.out.println(payload);
 
         Optional<User> opt = userSvc.authenticate(payload);
 
@@ -113,18 +93,16 @@ public class UserController {
         if (opt.isEmpty()) {
             return null;
         }
-        System.out.println(opt.get().getEmail());
 
         return ResponseEntity.ok(opt.get());
     }
+
 
     @PutMapping(path="/user/{username}/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
     produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public void updateUser(@PathVariable String username, 
         @RequestPart MultipartFile profileImage, @RequestPart String password, @RequestPart String email, @RequestPart String firstname, @RequestPart String lastname) throws Exception{
-        // JsonReader jr = Json.createReader(new StringReader(payload));
-        // JsonObject jo = jr.readObject();
 
         User user = new User();
         user.setUsername(username);
@@ -134,6 +112,7 @@ public class UserController {
         user.setEmail(email);
         user.setProfileImage(profileImage.getBytes());
 
+        mailSvc.sendUpdateMail(user);
         s3Svc.update(user, profileImage);
 
     }
@@ -142,6 +121,10 @@ public class UserController {
     @ResponseBody
     public void deleteUser(@PathVariable String username) throws Exception{
     
+        Optional<User> opt = userSvc.getUser(username);
+        if (opt.isPresent())    {
+            mailSvc.sendDeleteMail(opt.get());
+        }
         userSvc.deleteUser(username);
     }
 
@@ -152,6 +135,10 @@ public class UserController {
         @RequestPart String sourceName, @RequestPart(required = false) String url, @RequestPart(required = false) String urlImage, 
         @RequestPart(required = false) String content){
 
+            // 2023-04-21T01:19:37.000Z //"2023-04-22T15:17:18.716+08:00"
+            if (publishedAt.contains("+")) {
+                publishedAt = publishedAt.substring(0, publishedAt.length()-6);
+            }
             JsonObject jo = Json.createObjectBuilder()
                 .add("title", title)
                 .add("publishedAt", publishedAt)
@@ -166,7 +153,6 @@ public class UserController {
             News news = News.save(jo);
             News result = newsSvc.likeNews(news, username);
 
-            System.out.println(result.toJson().toString());
             return ResponseEntity.ok(result.toJson().toString());
     }
 
@@ -193,21 +179,6 @@ public class UserController {
             return ResponseEntity.ok(result.toJson().toString());
     }
 
-
-    // @PostMapping(path="/{username}/createIssue")
-    // @ResponseBody
-    // public ResponseEntity<String> createIssue(@RequestBody String payload, @PathVariable User user) {
-
-    //     System.out.println(payload);
-
-    //     JsonReader jr = Json.createReader(new StringReader(payload));
-    //     JsonObject jo = jr.readObject();
-        
-    //     IssueDetails id = new IssueDetails();
-        
-    // }
-
-    // displays all the news
     @GetMapping(path="/news/authors")
     @ResponseBody
     public ResponseEntity<List<String>> getAllCategories(@RequestParam String country, @RequestParam String username) throws Exception {
@@ -260,63 +231,48 @@ public class UserController {
         return ResponseEntity.ok(jArr.build().toString());
     }
 
-    // postComment
-    // @PostMapping(path="/postComment", consumes=MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    // @ResponseBody
-    // public ResponseEntity<String> postComment(@RequestPart String firstname, @RequestPart String lastname, 
-    //     @RequestPart String username, @RequestPart String comment, @RequestPart String newsId) {
-            
-    //         System.out.println(comment);
-    //         Comment c = new Comment();
-    //         c.setComment(comment);
-    //         c.setUsername(username);
-    //         c.setFirstname(firstname);
-    //         c.setLastname(lastname);
-    //         c.setNewsId(newsId);
-    //         c.setPublishedAt(DateTime.now());
-            
-    //         cSvc.saveComment(c);
-    //         System.out.println(c.getNewsId());
+    @PostMapping(path="/addFriends/{username}")
+    @ResponseBody
+    public void addFriend(@PathVariable String username, @RequestParam String friendsUsername) {
+        userSvc.addFriends(username, friendsUsername);
+    }
 
-    //         return ResponseEntity.ok(c.toJson().toString());
-    //     }
+    @GetMapping(path="/friends/{username}")
+    @ResponseBody
+    public ResponseEntity<String> getAllFriends(@PathVariable String username) {
+        List<User> users = userSvc.getFriends(username);
+        JsonArrayBuilder jArr = Json.createArrayBuilder();
+        users.stream().forEach(x -> 
+            jArr.add(x.toJson()));
 
-    // @GetMapping(path="/getComments")
-    // @ResponseBody
-    // public ResponseEntity<String> getComments() {
+        return ResponseEntity.ok(jArr.build().toString());
+    }
 
-    //     List<Comment> comments = cSvc.getComments();
-    //     System.out.println(comments.size());
+    @GetMapping(path="/searchFriends/{username}")
+    @ResponseBody
+    public ResponseEntity<String> searchFriends(@PathVariable String username, @RequestParam String keyword) throws SQLException{
+        List<User> users = userSvc.searchForFriends(keyword);
+        JsonArrayBuilder jArr = Json.createArrayBuilder();
+        users.stream().forEach(x -> 
+            jArr.add(x.toJson()));
 
-        
-    //     JsonArrayBuilder arr = Json.createArrayBuilder();
-    //     for(Comment c: comments)
-    //         arr.add(c.toJson());
+        return ResponseEntity.ok(jArr.build().toString());
+    }
 
-    //     return ResponseEntity.ok(arr.build().toString());
+    @DeleteMapping(path="/deleteFriend/{username}")
+    @ResponseBody
+    public void deleteFriend(@PathVariable String username, @RequestParam String friendsUsername) {
+        userSvc.deleteFriend(username, friendsUsername);
+    }
 
-    // }
+    @GetMapping(path="/nonFriends/{username}")
+    @ResponseBody
+    public ResponseEntity<String> getNonFriends(@PathVariable String username) throws SQLException {
+        List<User> users = userSvc.getNonFriends(username);
+        JsonArrayBuilder jArr = Json.createArrayBuilder();
+        users.stream().forEach(x -> 
+            jArr.add(x.toJson()));
 
-    // @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	// public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
-	// 	authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-	// 	final UserDetails userDetails = userDetailsService
-	// 			.loadUserByUsername(authenticationRequest.getUsername());
-
-	// 	final String token = jwtTokenUtil.generateToken(userDetails);
-
-	// 	return ResponseEntity.ok(new JwtResponse(token));
-	// }
-
-	// private void authenticate(String username, String password) throws Exception {
-	// 	try {
-	// 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-	// 	} catch (DisabledException e) {
-	// 		throw new Exception("USER_DISABLED", e);
-	// 	} catch (BadCredentialsException e) {
-	// 		throw new Exception("INVALID_CREDENTIALS", e);
-	// 	}
-	// }
+        return ResponseEntity.ok(jArr.build().toString());
+    }
 }

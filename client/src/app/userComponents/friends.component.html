@@ -1,0 +1,57 @@
+<body>
+  <form  [formGroup]="searchForm" (ngSubmit)="searchForFriends()" align="center">
+    <mat-form-field class="search-field">
+      <mat-label>Find a friend...</mat-label>
+      <input matInput formControlName="searchQuery" />
+      <mat-icon matPrefix>search</mat-icon>
+      
+    </mat-form-field>
+    <button mat-button>Submit</button>
+  </form>
+  <h2 align="center">Your friends</h2>
+  <div class="content">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let f of friends">
+        <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>{{f.firstname}}, {{f.lastname}}</mat-card-title>
+                <mat-card-subtitle>Username: {{f.username}}</mat-card-subtitle>
+                <img mat-card-md-image src="{{f.profileImage}}">
+              </mat-card-title-group>
+            </mat-card-header>
+          <mat-card-actions>
+            <!-- <button mat-button><mat-icon>person_add</mat-icon> Follow</button> -->
+            <button mat-button (click)="deleteFriend(f.username)"><mat-icon>person_add_disabled</mat-icon><span class="fontcolor">Unfollow</span></button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div>
+    <mat-divider></mat-divider>
+    <div class="body2">
+      <h2 align="center">People you may know</h2>
+      <div class="content">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+          <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let f of nonFriends">
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>{{f.firstname}}, {{f.lastname}}</mat-card-title>
+                    <mat-card-subtitle>Username: {{f.username}}</mat-card-subtitle>
+                    <img mat-card-md-image src="{{f.profileImage}}">
+                  </mat-card-title-group>
+                </mat-card-header>
+              <mat-card-actions>
+                <button mat-button (click)="addFriend(f.username)"><mat-icon>person_add</mat-icon> Follow</button>
+                <!-- <button mat-button (click)="deleteFriend(f.username)"><mat-icon>person_add_disabled</mat-icon><span class="fontcolor">Unfollow</span></button> -->
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+  

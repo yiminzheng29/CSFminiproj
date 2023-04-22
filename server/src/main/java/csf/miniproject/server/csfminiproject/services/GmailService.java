@@ -99,5 +99,80 @@ public class GmailService {
             }
         }
     }
+
+    public void sendUpdateMail(User user) throws Exception {
+        String message = """
+                Dear %s,\n\nCongratulations, your details have been successfully updated.\n
+                Please login to 'http://www.whatsnew.com to start browsing the latest news.\n\n
+                Thank you and have a great day ahead! \n\n xoxo What's New\n
+                psst Want to find a news the quick way? Start messaging us on telegram @this_newsapp_bot
+                """.formatted(user.getFirstname());
+
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = new MimeMessage(session);
+        email.setFrom(new InternetAddress(TEST_EMAIL));
+        email.addRecipient(TO, new InternetAddress(user.getEmail()));
+        email.setSubject("Your account has been successfully updated");
+        email.setText(message);
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        email.writeTo(buffer);
+        byte[] rawMessageBytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        Message msg = new Message();
+        msg.setRaw(encodedEmail);
+
+        try {
+            msg = service.users().messages().send("me", msg).execute();
+            System.out.println("Message id: " + msg.getId());
+            System.out.println(msg.toPrettyString());
+        } catch (GoogleJsonResponseException e) {
+            GoogleJsonError error = e.getDetails();
+            if (error.getCode() == 403) {
+                System.err.println("Unable to send message: " + e.getDetails());
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    public void sendDeleteMail(User user) throws Exception {
+        String message = """
+                Dear %s,\n\nWe are sad to see you leave.\n
+                Please come back to 'http://www.whatsnew.com anytime.\n\n
+                Thank you and have a great day ahead! \n\n xoxo What's New\n
+                psst Want to find a news the quick way? Start messaging us on telegram @this_newsapp_bot
+                """.formatted(user.getFirstname());
+
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = new MimeMessage(session);
+        email.setFrom(new InternetAddress(TEST_EMAIL));
+        email.addRecipient(TO, new InternetAddress(user.getEmail()));
+        email.setSubject("Your account has been successfully deleted");
+        email.setText(message);
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        email.writeTo(buffer);
+        byte[] rawMessageBytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        Message msg = new Message();
+        msg.setRaw(encodedEmail);
+
+        try {
+            msg = service.users().messages().send("me", msg).execute();
+            System.out.println("Message id: " + msg.getId());
+            System.out.println(msg.toPrettyString());
+        } catch (GoogleJsonResponseException e) {
+            GoogleJsonError error = e.getDetails();
+            if (error.getCode() == 403) {
+                System.err.println("Unable to send message: " + e.getDetails());
+            } else {
+                throw e;
+            }
+        }
+    }
+
     
 }

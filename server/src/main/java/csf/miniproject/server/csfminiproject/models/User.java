@@ -102,7 +102,20 @@ public class User {
         return user;
     }
 
-    
+    public static User rowSetCreate(SqlRowSet rs) throws SQLException{
+        User user = new User();
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setFirstname(rs.getString("firstname"));
+        user.setLastname(rs.getString("lastname"));
+        // user.setDob(rs.getDate("dob"));
+        user.setEmail(rs.getString("email"));
+        user.setProfileImageUrl(rs.getString("profileImageUrl"));
+        // user.setPhone(rs.getString("phone"));
+        
+
+        return user;
+    }
 
 
 }

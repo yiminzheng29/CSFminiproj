@@ -1,0 +1,25 @@
+body {
+    margin-top: 150px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+mat-toolbar {
+    justify-content: space-between;
+}
+
+.content {
+    padding: 16px;
+}
+
+.content > mat-card {
+    margin-bottom: 16px;
+}
+
+mat-icon {
+    color: grey;
+}
+
+.fontcolor {
+    color: grey;
+}

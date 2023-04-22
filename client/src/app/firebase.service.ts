@@ -46,7 +46,7 @@ export class FirebaseService {
         const params = new HttpParams()
             .set("username", username)
             .set("token", token)
-        return firstValueFrom(this.http.post('http://localhost:8080/api/saveToken', params))
+        return (this.http.post('http://localhost:8080/api/saveToken', params))
         
     }
 
@@ -62,7 +62,16 @@ export class FirebaseService {
         // params.set("recipient", recipient)
         // params.set("message", message)
         // params.set("sender", sender)
-        return firstValueFrom(this.http.post('http://localhost:8080/api/news/sendNews', content))
+        return (this.http.post('http://localhost:8080/api/news/sendNews', content))
+    }
+
+    public addFriendNotification(message: string, sender: string, recipient: string) {
+        const content = new FormData()
+        content.set("message", message)
+        content.set("sender", sender)
+        content.set("recipient", recipient)
+        console.info(content)
+        return (this.http.post('http://localhost:8080/api/addAFriend', content))
     }
 
     // public test(message: string) {

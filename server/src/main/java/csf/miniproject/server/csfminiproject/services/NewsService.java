@@ -119,8 +119,8 @@ public class NewsService {
         return newsRepo.getNewsByUser(username);
     }
 
-    public List<News> selectTopHeadlines(Integer limit) {
-        return newsRepo.selectTopHeadlines(limit);
+    public List<News> selectTopHeadlines(Integer limit, String username) {
+        return newsRepo.selectTopHeadlines(limit, username);
     }
 
 }

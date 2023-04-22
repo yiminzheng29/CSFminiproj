@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FirebaseService } from '../firebase.service';
-import { News } from '../models';
+import { News, User } from '../models';
 import { NewsService } from '../news.service';
 import { UserService } from '../user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -35,8 +35,9 @@ export class EntertainmentNewsComponent {
   folded = 'closed'
   searchForm!: FormGroup
   shareNews!: FormGroup
-  recipient!: string
-
+  friends!: User[]
+  friendsList: string[] = []
+  
   constructor(private newsSvc:NewsService, private activatedRoute: ActivatedRoute, private router: Router,
     private userSvc: UserService, private firebaseSvc: FirebaseService, private fb: FormBuilder) {}
 
@@ -61,6 +62,15 @@ export class EntertainmentNewsComponent {
         
       )
       this.searchForm = this.createForm()
+      this.getFriends()
+    }
+
+    async getFriends() {
+      this.friends = await this.userSvc.getFriends(this.username)
+      this.friends.forEach(x => {
+        this.friendsList.push(x.username)
+      })
+    
   }
 
   submitQuery() {
@@ -105,18 +115,28 @@ export class EntertainmentNewsComponent {
       
     }
 
-    share(i: number): void {
+    // share(i: number): void {
+    //   this.selectedNews = this.results[i] as News
+    //   // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
+    //   console.info(this.shareNews.value['recipient'])
+    //   this.recipient = this.shareNews.value['recipient'] as string
+    //   this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
+    //     this.recipient, this.selectedNews.urlImage)
+    //   this.shareNews.reset()
+    //   this.ngOnInit()
+    //   this.folded='closed'
+  
+    // }
+
+    share(recipient: string, i: number): void {
       this.selectedNews = this.results[i] as News
-      // this.firebaseSvc.shareNews(this.selectedNews.title, this.username)
-      console.info(this.shareNews.value['recipient'])
-      this.recipient = this.shareNews.value['recipient'] as string
       this.firebaseSvc.shareNews(this.selectedNews.title, this.selectedNews.url, 
-        this.recipient, this.selectedNews.urlImage)
+        recipient, this.selectedNews.urlImage)
       this.shareNews.reset()
       this.ngOnInit()
       this.folded='closed'
-  
     }
+    
   ngOnDestroy(): void {
       this.params$.unsubscribe()
       this.userSub$.unsubscribe()

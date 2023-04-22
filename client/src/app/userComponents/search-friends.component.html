@@ -1,0 +1,33 @@
+<body>
+  <h4 class="back-nav" [routerLink]="['/friends', this.username]"><< Back to friends</h4>
+    <h2 align="center">Your search results</h2>
+  <div class="content">
+    <div *ngIf="this.searchResults.length==0">
+      Your search returned 0 results
+    </div>
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let f of searchResults">
+        <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title-group>
+                <mat-card-title>{{f.firstname}}, {{f.lastname}}</mat-card-title>
+                <mat-card-subtitle>Username: {{f.username}}</mat-card-subtitle>
+                <img mat-card-md-image src="{{f.profileImage}}">
+              </mat-card-title-group>
+            </mat-card-header>
+          <mat-card-actions>
+            <div *ngIf="!this.yourFriends.includes(f.username)">
+                <button mat-button (click)="addFriend(f.username)"><mat-icon>person_add</mat-icon><span class="fontcolor">Follow</span></button>
+            </div>
+            <div *ngIf="this.yourFriends.includes(f.username)">
+                <button mat-button (click)="deleteFriend(f.username)"><mat-icon>person_add_disabled</mat-icon><span class="fontcolor">Unfollow</span></button>
+            </div>
+            
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</body>
+  

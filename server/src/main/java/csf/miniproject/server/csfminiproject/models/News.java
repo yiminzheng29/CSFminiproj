@@ -146,10 +146,10 @@ public class News {
         news.setUrlToImage(rs.getString("urlImage"));
         news.setDescription(rs.getString("description"));
         news.setContent(rs.getString("content"));
-        // news.setPublishedAt(new DateTime(
-        //     DateTimeFormat.forPattern("dd/MM/yyyy")
-        //             .parseDateTime(rs.getString("publishedAt"))));
-        // news.setPublishedAt(DateTime.now());
+        news.setPublishedAt(new DateTime(
+            DateTimeFormat.forPattern("dd/MM/yyyy")
+                    .parseDateTime(rs.getString("publishedAt"))));
+        news.setPublishedAt(DateTime.now());
 
         
 

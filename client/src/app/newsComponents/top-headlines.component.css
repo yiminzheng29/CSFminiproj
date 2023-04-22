@@ -1,0 +1,46 @@
+.example-card{
+    margin-top: 10px;
+    margin-bottom: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  .img-article{
+    width: 700px;
+    height: auto;
+    align-items: center;
+    max-width: 100%;
+    }
+  
+  .icon-color{
+    color: red
+  }
+  
+  .top-buttons {
+    margin-bottom: 30px;
+    padding-left: 10px;
+  }
+    
+  slider {
+    margin-top: 150px;
+  }
+  
+  body {
+    margin-top: 30px;
+  }
+  
+  .search-field {
+    width: 300px; /* set your desired width */
+    margin: auto;
+  
+  }
+  
+  .card-icons {
+    margin-top: auto;
+    display: flex;
+    /* justify-content: flex-end; */
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    color: grey;
+  }

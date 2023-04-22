@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
@@ -10,7 +10,7 @@ import { User } from '../models';
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnDestroy {
   
   @ViewChild('image')
   image!: ElementRef
@@ -75,5 +75,10 @@ export class EditUserComponent implements OnInit {
       // phone: this.fb.control('', [Validators.required])
     })
   }
+
+  ngOnDestroy(): void {
+    this.userSub$.unsubscribe()
+    this.params$.unsubscribe()
+}
 
 }

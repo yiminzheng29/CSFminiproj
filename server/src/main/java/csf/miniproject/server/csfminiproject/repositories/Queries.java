@@ -33,6 +33,10 @@ public class Queries {
     public static final String SQL_GET_USER = """
         select * from user where username = ? and password = sha1(?)
         """;
+
+    public static final String SQL_GET_ALL_USERS = """
+        select * from user
+        """;
         
     public static final String SQL_UPDATE_USER = """
         update user set password = sha1(?), firstname = ?, lastname = ?, email = ?, profileImage =?, profileImageUrl = ? where
@@ -42,8 +46,24 @@ public class Queries {
         delete from user where username = ?
             """;
 
-    public static final String SQL_SAVE_ISSUE="""
-        insert into issues(issueNo, title, description, priority, status, timestamp, user)
+    public static final String SQL_GET_LIST_OF_USERS = """
+        select * from user where username like ?
+            """;
+
+    public static final String SQL_DELETE_FRIEND = """
+        delete from friendsList where username = ? and friends_username = ?
+            """;
+
+    public static final String SQL_ADD_FRIENDS = """
+        insert into friendsList(username, friends_username) values(?,?)
+            """;
+
+    public static final String SQL_GET_FRIENDS = """
+        select * from friendsList where username = ?
+            """;
+
+    public static final String SQL_RETRIEVE_FRIEND_RECORD = """
+        select * from user where username = ?
             """;
 
     public static final String SQL_SAVE_NEWS = """
@@ -108,5 +128,7 @@ public class Queries {
 
     public static final String SQL_GET_TOKEN = """
         select token from notifications where username=?""";
+
+
         
 }
