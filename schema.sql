@@ -1,8 +1,3 @@
-CREATE DATABASE csf;
-CREATE USER 'csfuser'@'localhost' IDENTIFIED BY 'Password@123456';
-GRANT ALL PRIVILEGES ON *.* TO 'csfuser'@'localhost' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-
 -- for user table
 create table user (
 	# primary key
@@ -46,19 +41,14 @@ create table likesRecord (
     primary key(newsId)
 );
 
-create table comments (
-	commentId char(8) not null,
-    username varchar(32) not null,
-    firstname varchar(32) not null,
-    lastname varchar(32) not null,
-    comment varchar(1000) not null,
-    newsId char(6) not null,
-    publishedAt datetime,
-    
-    primary key(commentId)
-);
-
 create table notifications (
 	username varchar(32) not null,
     token varchar(1000) not null
+);
+
+create table friendsList (
+	username varchar(32) not null,
+    friends_username varchar(32) not null,
+    
+    constraint fl_pk primary key(username, friends_username)
 );
