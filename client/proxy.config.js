@@ -1,7 +1,7 @@
 const proxy_config = [
     {
       context: [ '/api/**' ],
-      target: 'https://whatsnew-production.up.railway.app',
+      target: 'http://localhost:8080',
       secure: false
     }
   ]

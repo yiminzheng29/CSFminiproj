@@ -9,12 +9,13 @@
 </head>
 <body>
   
-
+  
   <div class="wrapper">
 
 
     <div class="form-box login">
       <h2>Login</h2>
+      <p align="center"><i>Username: test; Password: 1234</i></p>
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="input-box">
           <input type="text" formControlName="username" required>

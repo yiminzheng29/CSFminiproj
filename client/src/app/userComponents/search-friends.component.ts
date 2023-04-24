@@ -48,9 +48,13 @@ export class SearchFriendsComponent implements OnInit, OnDestroy{
     this.searchResults = await this.userSvc.searchFriends(this.username, this.keyword)
     this.searchResults.forEach(x => {
       this.allFriends.push(x.username as string)
+      
     })
-    this.index = this.allFriends.indexOf(this.username)
-    this.searchResults.splice(this.index, 1) // remove yourself from list of friends
+    if (this.allFriends.includes(this.username)) {
+      this.index = this.allFriends.indexOf(this.username)
+      this.searchResults.splice(this.index,1)
+    }
+    
   }
 
   async friendsList() {
