@@ -5,9 +5,9 @@ create table user (
     password varchar(256) not null,
     firstname varchar(32) not null,
     lastname varchar(32) not null,
-    dob date not null,
     email varchar(128) not null,
-    phone varchar(16),
+    profileImage MediumBlob not null,
+    profileImageUrl varchar(256) not null,
 
     primary key(username)
 );
