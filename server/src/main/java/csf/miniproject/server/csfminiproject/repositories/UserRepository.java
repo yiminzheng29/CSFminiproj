@@ -130,9 +130,9 @@ public class UserRepository {
         String query = "%".concat(keyword).concat("%");
 
         SqlRowSet rs = template.queryForRowSet(SQL_GET_LIST_OF_USERS, query);
-        while (rs.next()) 
+        while (rs.next()) {
             results.add(User.rowSetCreate(rs));
-
+        }
         return results;
     }
     
